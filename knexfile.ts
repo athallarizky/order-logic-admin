@@ -1,16 +1,23 @@
-import type { Knex } from 'knex';
-
-// Update with your config settings.
+import Knex from 'knex';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env' });
+// console.dir(process.env);
 
 const config: { [key: string]: Knex.Config } = {
   development: {
-    client: 'mysql2',
+    client: process.env.DB_CLIENT,
     connection: {
       host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
     },
+    pool: {
+      max: 7,
+      min: 3,
+    },
+    acquireConnectionTimeout: 5000,
   },
 };
 
