@@ -18,6 +18,7 @@ const colors = {
     black: '#000000',
     white: '#FFFFFF',
     gray: '#808080',
+    lightGray: '#E2E8F0',
   },
 };
 
@@ -30,6 +31,16 @@ const theme = extendTheme(<ThemeOverride>{
   },
   colors: { ...colors.colors },
   components: {
+    Container: {
+      variants: {
+        pageContainer: {
+          background: colors.colors.lightGray,
+          maxWidth: '100%',
+          minHeight: '100vh',
+          paddingX: '0',
+        },
+      },
+    },
     Heading: {
       baseStyle: {
         fontWeight: 400,
