@@ -5,7 +5,7 @@ const PageContainer = ({ children }) => {
   return (
     <Container variant="pageContainer">
       <Sidebar />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }} p="4" pb="30vh">
         {children}
       </Box>
     </Container>

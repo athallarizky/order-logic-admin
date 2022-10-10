@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Flex, IconButton, Text, FlexProps, useColorModeValue } from '@chakra-ui/react';
+import { Flex, IconButton, Text, FlexProps, useColorModeValue } from '@chakra-ui/react';
 import { FiMenu } from 'react-icons/fi';
 
 interface MobileNavProps extends FlexProps {

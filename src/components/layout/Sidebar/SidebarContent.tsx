@@ -1,26 +1,20 @@
 import React from 'react';
+import Link from 'next/link';
 import { Box, Flex, Text, useColorModeValue, BoxProps, CloseButton } from '@chakra-ui/react';
 import { FiHome, FiTrendingUp, FiCompass, FiStar, FiSettings } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import NavItem from './NavItem';
-/**
- * Menu Lists
- */
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  href: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Home', icon: FiHome, href: '/' },
+  { name: 'Close WO Logic', icon: FiTrendingUp, href: '/close-wo' },
+  { name: 'Rekap WO Logic', icon: FiCompass, href: '#' },
+  { name: 'Performansi', icon: FiStar, href: '#' },
 ];
-
-/**
- * Sidebar Content
- */
 
 interface SidebarContentProps extends BoxProps {
   onClose: () => void;
@@ -43,9 +37,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map(link => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
+        <Link href={link.href}>
+          <NavItem key={link.name} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        </Link>
       ))}
     </Box>
   );

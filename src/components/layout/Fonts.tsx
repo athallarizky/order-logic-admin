@@ -7,17 +7,17 @@ const Fonts = () => (
     styles={`
       @font-face {
         font-family: "PPMoriSemiBold";
-        src: url("fonts/PPMori-SemiBold.otf");
+        src: url("/fonts/PPMori-SemiBold.otf");
       }
 
       @font-face {
         font-family: "RobotoRegular";
-        src: url("fonts/RobotoCondensed-Regular.ttf");
+        src: url("/fonts/RobotoCondensed-Regular.ttf");
       }
 
       @font-face {
         font-family: "RobotoBold";
-        src: url("fonts/RobotoCondensed-Bold.ttf");
+        src: url("/fonts/RobotoCondensed-Bold.ttf");
       }
 
       @font-face {
@@ -27,7 +27,7 @@ const Fonts = () => (
 
       @font-face {
         font-family: "RobotoLight";
-        src: url("fonts/RobotoCondensed-Light.ttf");
+        src: url("/fonts/RobotoCondensed-Light.ttf");
       }
     `}
   />
