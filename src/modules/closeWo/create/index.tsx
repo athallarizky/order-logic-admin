@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 // Date Helper
 import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -8,9 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 import axios from '@/configs/axiosConfig';
 // Components & Icons
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import { Box, Flex, Text, FormControl, FormLabel, Input, Textarea, Button } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
-import { IoMdArrowRoundBack } from 'react-icons/io';
 
 const CloseWo: React.FC = () => {
   const router = useRouter();
@@ -25,7 +24,6 @@ const CloseWo: React.FC = () => {
     loker: '',
     agent_hi: '',
     notes: '',
-    date: format(new Date(date), 'yyyy-MM-dd'),
   });
 
   const fieldHandler = e => {
@@ -38,8 +36,9 @@ const CloseWo: React.FC = () => {
   };
 
   const submitHandler = () => {
+    const updatedField = Object.assign(fields, { date: format(new Date(date), 'yyyy-MM-dd') });
     axios.post('/close-wo-api/create', {
-      data: JSON.stringify(fields),
+      data: JSON.stringify(updatedField),
     });
   };
 

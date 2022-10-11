@@ -22,17 +22,10 @@ interface SidebarContentProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   return (
-    <Box
-      bg={useColorModeValue('white', 'gray.900')}
-      shadow="base"
-      w={{ base: 'full', md: 60 }}
-      pos="fixed"
-      h="full"
-      {...rest}
-    >
+    <Box background="#2A2E45" shadow="base" w={{ base: 'full', md: 60 }} pos="fixed" h="full" {...rest} color="#FFFFFF">
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+          Order Logic
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>

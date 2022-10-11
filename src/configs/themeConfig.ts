@@ -34,7 +34,7 @@ const theme = extendTheme(<ThemeOverride>{
     Container: {
       variants: {
         pageContainer: {
-          background: colors.colors.lightGray,
+          background: colors.colors.white,
           maxWidth: '100%',
           minHeight: '100vh',
           paddingX: '0',
