@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const createdData = await dbConfig('close_wo').where('id', create).first();
 
-  res.status(200).json({
+  return res.status(200).json({
     message: 'Data created successfully',
     data: createdData,
   });

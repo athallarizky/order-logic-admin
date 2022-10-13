@@ -57,41 +57,41 @@ const CloseWo: React.FC = () => {
         <Flex className="form-group" flexDirection="column" width="55%">
           <FormControl>
             <FormLabel>No Tiket</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="no_ticket" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="no_ticket" />
           </FormControl>
 
           <FormControl>
             <FormLabel>No Internet</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="no_internet" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="no_internet" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Kode STO</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="sto_code" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="sto_code" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Perbaikan</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="repairment" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="repairment" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Loker</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="loker" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="loker" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Agen HI</FormLabel>
-            <Input type="text" onChange={fieldHandler.bind(this)} name="agent_hi" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="agent_hi" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Keterangan</FormLabel>
-            <Textarea onChange={fieldHandler.bind(this)} name="notes" />
+            <Textarea onChange={e => fieldHandler(e)} name="notes" />
           </FormControl>
           <FormControl>
             <FormLabel>Tanggal</FormLabel>
-            <DatePicker selected={date} onChange={(date: Date) => setDate(date)} dateFormat="dd-MM-yyyy" />
+            <DatePicker selected={date} onChange={(dates: Date) => setDate(dates)} dateFormat="dd-MM-yyyy" />
           </FormControl>
           <Button onClick={() => submitHandler()}>Submit</Button>
         </Flex>

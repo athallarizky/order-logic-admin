@@ -4,6 +4,7 @@ import { Box, Flex, Text, useColorModeValue, BoxProps, CloseButton } from '@chak
 import { FiHome, FiTrendingUp, FiCompass, FiStar, FiSettings } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import NavItem from './NavItem';
+
 interface LinkItemProps {
   name: string;
   icon: IconType;

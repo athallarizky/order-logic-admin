@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Box } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
+
 const PageContainer = ({ children }) => {
   return (
     <Container variant="pageContainer">
