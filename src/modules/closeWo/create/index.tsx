@@ -13,17 +13,16 @@ import PageContainer from '@/components/layout/PageContainer';
 
 const CloseWo: React.FC = () => {
   const router = useRouter();
-  const [date, setDate] = useState(new Date());
+  const [tanggal, setTanggal] = useState(new Date());
 
-  console.log(typeof date);
   const [fields, setFields] = useState({
-    no_ticket: '',
+    no_tiket: '',
     no_internet: '',
-    sto_code: '',
-    repairment: '',
+    code_sto: '',
+    perbaikan: '',
     loker: '',
-    agent_hi: '',
-    notes: '',
+    agen_hi: '',
+    keterangan: '',
   });
 
   const fieldHandler = e => {
@@ -36,7 +35,7 @@ const CloseWo: React.FC = () => {
   };
 
   const submitHandler = () => {
-    const updatedField = Object.assign(fields, { date: format(new Date(date), 'yyyy-MM-dd') });
+    const updatedField = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     axios.post('/close-wo-api/create', {
       data: JSON.stringify(updatedField),
     });
@@ -57,7 +56,7 @@ const CloseWo: React.FC = () => {
         <Flex className="form-group" flexDirection="column" width="55%">
           <FormControl>
             <FormLabel>No Tiket</FormLabel>
-            <Input type="text" onChange={e => fieldHandler(e)} name="no_ticket" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="no_tiket" />
           </FormControl>
 
           <FormControl>
@@ -67,12 +66,12 @@ const CloseWo: React.FC = () => {
 
           <FormControl>
             <FormLabel>Kode STO</FormLabel>
-            <Input type="text" onChange={e => fieldHandler(e)} name="sto_code" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="code_sto" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Perbaikan</FormLabel>
-            <Input type="text" onChange={e => fieldHandler(e)} name="repairment" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="perbaikan" />
           </FormControl>
 
           <FormControl>
@@ -82,16 +81,16 @@ const CloseWo: React.FC = () => {
 
           <FormControl>
             <FormLabel>Agen HI</FormLabel>
-            <Input type="text" onChange={e => fieldHandler(e)} name="agent_hi" />
+            <Input type="text" onChange={e => fieldHandler(e)} name="agen_hi" />
           </FormControl>
 
           <FormControl>
             <FormLabel>Keterangan</FormLabel>
-            <Textarea onChange={e => fieldHandler(e)} name="notes" />
+            <Textarea onChange={e => fieldHandler(e)} name="keterangan" />
           </FormControl>
           <FormControl>
             <FormLabel>Tanggal</FormLabel>
-            <DatePicker selected={date} onChange={(dates: Date) => setDate(dates)} dateFormat="dd-MM-yyyy" />
+            <DatePicker selected={tanggal} onChange={(date: Date) => setTanggal(date)} dateFormat="dd-MM-yyyy" />
           </FormControl>
           <Button onClick={() => submitHandler()}>Submit</Button>
         </Flex>

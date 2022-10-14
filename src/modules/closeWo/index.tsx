@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 // Interfaces
 import { FormWoDataListResponse } from '@/interfaces/response';
@@ -8,6 +8,8 @@ import { FormWoDataListResponse } from '@/interfaces/response';
 import { IoMdArrowRoundForward } from 'react-icons/io';
 import DataTable from 'react-data-table-component';
 import { format } from 'date-fns';
+import axios from '@/configs/axiosConfig';
+
 // Components
 import { Box, Flex, Text, Button, useDisclosure } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
@@ -20,6 +22,8 @@ interface CloseWoProps {
 }
 
 const CloseWo: React.FC<CloseWoProps> = props => {
+  const [formCloseWOData, setFormCloseWOData] = useState(props?.formDataList?.data);
+
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -60,9 +64,15 @@ const CloseWo: React.FC<CloseWoProps> = props => {
       selector: row => row.keterangan,
     },
   ];
+
+  const handleResetFilter = async () => {
+    const { data } = await axios.get('/close-wo-api');
+    console.log('data.data', data.data);
+    setFormCloseWOData(data.data);
+  };
   return (
     <PageContainer>
-      <FilterModal isOpen={isOpen} onClose={onClose} />
+      <FilterModal isOpen={isOpen} onClose={onClose} updateFormCloseWOData={setFormCloseWOData} />
       <Flex flexDirection="column">
         <Box>
           <Box
@@ -84,9 +94,14 @@ const CloseWo: React.FC<CloseWoProps> = props => {
           Form Close WO Logic
         </Text>
         <Box mb="4vh">
-          <Button onClick={onOpen}>Filter</Button>
+          <Button onClick={onOpen} colorScheme="blue">
+            Filter
+          </Button>
+          <Button fontSize="18px" onClick={() => handleResetFilter()}>
+            reset filter
+          </Button>
         </Box>
-        <DataTable columns={columns} data={props?.formDataList?.data} striped selectableRows={false} />
+        <DataTable columns={columns} data={formCloseWOData} striped selectableRows={false} />
       </Flex>
     </PageContainer>
   );

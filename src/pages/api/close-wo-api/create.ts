@@ -4,17 +4,17 @@ import dbConfig from '@/configs/dbConfig';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { no_ticket, no_internet, sto_code, repairment, loker, agent_hi, notes, date } = JSON.parse(req.body.data);
+  const { no_tiket, no_internet, code_sto, perbaikan, loker, agen_hi, keterangan, tanggal } = JSON.parse(req.body.data);
 
   const create = await dbConfig('close_wo').insert({
-    no_tiket: no_ticket,
+    no_tiket,
     no_internet,
-    code_sto: sto_code,
-    perbaikan: repairment,
+    code_sto,
+    perbaikan,
     loker,
-    agen_hi: agent_hi,
-    keterangan: notes,
-    tanggal: date,
+    agen_hi,
+    keterangan,
+    tanggal,
   });
 
   const createdData = await dbConfig('close_wo').where('id', create).first();
