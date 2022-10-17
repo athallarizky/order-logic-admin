@@ -2,9 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
-  const { no_tiket, no_internet, code_sto, perbaikan, loker, agen_hi, keterangan, tanggal } = JSON.parse(req.body.data);
+  /* POSTMAN */
+  const { no_tiket, no_internet, code_sto, perbaikan, loker, agen_hi, keterangan, tanggal } = req.body;
 
   const create = await dbConfig('close_wo').insert({
     no_tiket,
