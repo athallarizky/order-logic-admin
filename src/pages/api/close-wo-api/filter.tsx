@@ -1,14 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
+import Knex from 'knex';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { code_sto, agen_hi, perbaikan, bulan } = req.body;
+  const { code_sto, agen_hi, perbaikan, bulan, tanggal } = req.body;
+  const currentYear = new Date().getFullYear()
 
-  console.log('data', code_sto);
+  console.log('data', tanggal);
 
-  const filteredData = await dbConfig('close_wo').modify(function (queryBuilder) {
+  const filteredData = await dbConfig('close_wo').select('*', dbConfig.raw("DATE_FORMAT(tanggal, '%Y-%m-%d') as tanggal")).modify(function (queryBuilder) {
     if (code_sto) {
       queryBuilder.where('code_sto', code_sto);
     } else if (agen_hi) {
@@ -16,8 +18,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (perbaikan) {
       queryBuilder.where('perbaikan', perbaikan);
     }
-  }).andWhereRaw(`EXTRACT(MONTH FROM tanggal) = ?`, [bulan]);
-
+    if (bulan) {
+      queryBuilder.where(dbConfig.raw(`EXTRACT(MONTH FROM tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [bulan, currentYear]))
+    } else if (tanggal) {
+      queryBuilder.where(dbConfig.raw(`DAY(tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [tanggal, currentYear]));
+    }
+  });
+  console.log(filteredData);
   // console.log(
   //   'DEBUG QUERY',
   //   dbConfig('close_wo')
