@@ -1,24 +1,30 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
+import Knex from 'knex';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const data = JSON.parse(req.body.data);
+  const { code_sto, agen_hi, perbaikan, bulan, tanggal } = req.body;
+  const currentYear = new Date().getFullYear()
 
-  console.log('data', data);
+  console.log('data', tanggal);
 
-  const filteredData = await dbConfig('close_wo').whereRaw(`
-    no_tiket like "%${data.no_tiket}%"
-    and no_internet like "%${data.no_internet}%"
-    and code_sto like "%${data.code_sto}%"
-    and perbaikan like "%${data.perbaikan}%"
-    and loker like "%${data.loker}%"
-    and agen_hi like "%${data.agen_hi}%"
-    and keterangan like "%${data.keterangan}%"
-    and tanggal like "%${data.tanggal}%"
-  `);
-
+  const filteredData = await dbConfig('close_wo').select('*', dbConfig.raw("DATE_FORMAT(tanggal, '%Y-%m-%d') as tanggal")).modify(function (queryBuilder) {
+    if (code_sto) {
+      queryBuilder.where('code_sto', code_sto);
+    } else if (agen_hi) {
+      queryBuilder.where('agen_hi', agen_hi);
+    } else if (perbaikan) {
+      queryBuilder.where('perbaikan', perbaikan);
+    }
+    if (bulan) {
+      queryBuilder.where(dbConfig.raw(`EXTRACT(MONTH FROM tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [bulan, currentYear]))
+    } else if (tanggal) {
+      queryBuilder.where(dbConfig.raw(`DAY(tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [tanggal, currentYear]));
+    }
+  });
+  console.log(filteredData);
   // console.log(
   //   'DEBUG QUERY',
   //   dbConfig('close_wo')
