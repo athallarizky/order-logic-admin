@@ -43,6 +43,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, updateFormCl
 
   const fieldHandler = e => {
     const name = e.target.getAttribute('name');
+    console.log(name);
 
     setFields({
       ...fields,
@@ -81,6 +82,12 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, updateFormCl
     onClose();
   };
 
+  const InputGroupStyle = styled.div`
+    input {
+      border-color: black;
+    }
+  `;
+
   const DatePickerStyle = styled.div`
     .datePicker input {
       background: #33333320;
@@ -94,8 +101,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, updateFormCl
       <ModalContent>
         <ModalHeader>Filter</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody color="black">
           <Flex className="form-group" flexDirection="column" width="100%">
+            {/* <InputGroupStyle> */}
             <FormControl>
               <FormLabel>No Tiket</FormLabel>
               <Input type="text" onChange={e => fieldHandler(e)} name="no_tiket" />
@@ -130,6 +138,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, updateFormCl
               <FormLabel>Keterangan</FormLabel>
               <Textarea onChange={e => fieldHandler(e)} name="keterangan" />
             </FormControl>
+            {/* </InputGroupStyle> */}
             <DatePickerStyle>
               <FormControl>
                 <FormLabel>Tanggal</FormLabel>

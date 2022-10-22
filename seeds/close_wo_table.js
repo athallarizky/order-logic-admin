@@ -1,7 +1,7 @@
-
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('close_wo').del()
+  return knex('close_wo')
+    .del()
     .then(function () {
       // Inserts seed entries
       return knex('close_wo').insert([
@@ -23,7 +23,7 @@ exports.seed = function (knex) {
           loker: 'TAWHD',
           agen_hi: 'DONI',
           keterangan: 'CLOSE ONDESK',
-          tanggal: '2021-10-17'
+          tanggal: '2021-10-17',
         },
         {
           no_tiket: 'IN148123331',
@@ -33,8 +33,8 @@ exports.seed = function (knex) {
           loker: 'TAWHD',
           agen_hi: 'BAYU',
           keterangan: 'CLOSE ONDESK',
-          tanggal: '2022-11-19'
-        }
+          tanggal: '2022-11-19',
+        },
       ]);
     });
 };

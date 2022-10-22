@@ -16,7 +16,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.DB_NAME,
     },
     seeds: {
-      directory: './seeds'
+      directory: './seeds',
     },
     pool: {
       max: 7,
