@@ -12,8 +12,8 @@ export type TroubleResponse = {
 };
 
 const Home: React.FC = () => {
-  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/close-wo-api/`, async () => {
-    const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/close-wo-api/`);
+  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, async () => {
+    const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`);
     return response;
   });
   const router = useRouter();

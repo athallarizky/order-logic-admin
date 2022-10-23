@@ -22,47 +22,51 @@ const TroubleReport = () => {
   const router = useRouter();
   const [shouldFetch, setShouldFetch] = useState<boolean>(false);
 
-  useSWR(!troubleData || shouldFetch ? `${process.env.NEXT_PUBLIC_API_URL}/api/close-wo-api/` : null, async () => {
-    const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/close-wo-api/`);
+  useSWR(!troubleData || shouldFetch ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/` : null, async () => {
+    const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`);
     setTroubleData(response.data);
     setShouldFetch(false);
   });
 
   const columns = [
     {
-      name: 'No Tiket',
-      selector: row => row.no_tiket,
-      sortable: true,
-    },
-    {
-      name: 'No Internet',
-      selector: row => row.no_internet,
-      sortable: true,
-    },
-    {
       name: 'Tanggal',
       selector: row => format(new Date(row.tanggal), 'yyyy-MM-dd'),
       sortable: true,
     },
     {
-      name: 'Kode STO',
-      selector: row => row.code_sto,
+      name: 'No. Tiket',
+      selector: row => row.no_tiket,
+      sortable: true,
     },
     {
-      name: 'Loker',
-      selector: row => row.loker,
+      name: 'Source',
+      selector: row => row.source,
+      sortable: true,
+    },
+    {
+      name: 'Kode STO',
+      selector: row => row.sto,
+    },
+    {
+      name: 'No. Internet',
+      selector: row => row.no_internet,
+    },
+    {
+      name: 'No. Telepon',
+      selector: row => row.no_telepon,
+    },
+    {
+      name: 'Jenis Gangguan',
+      selector: row => row.jenis_gangguan,
+    },
+    {
+      name: 'Detail Gangguan',
+      selector: row => row.keterangan,
     },
     {
       name: 'Perbaikan',
       selector: row => row.perbaikan,
-    },
-    {
-      name: 'Agen HI',
-      selector: row => row.agen_hi,
-    },
-    {
-      name: 'keterangan',
-      selector: row => row.keterangan,
     },
   ];
 
@@ -91,9 +95,9 @@ const TroubleReport = () => {
             </Button>
           </Box>
           <Box className="right-action">
-            <Button onClick={() => handleResetFilter()} height="30px" background="primary">
+            <Button onClick={() => router.push('/trouble-report/create')} height="30px" background="primary">
               <RiAddFill className="icon" color="white" style={{ marginRight: '5px' }} />
-              <Text fontSize="15px" color="white" onClick={() => router.push('/trouble-report/create')}>
+              <Text fontSize="15px" color="white">
                 Tambah Data
               </Text>
             </Button>

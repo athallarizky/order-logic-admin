@@ -61,7 +61,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
       data = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     }
 
-    const responseData = await mutate('/api/close-wo-api/filter', sender('/api/close-wo-api/filter', { data }));
+    const responseData = await mutate('/api/v1/filter', sender('/api/v1/filter', { data }));
 
     // const result = await axios.post('/close-wo-api/filter', {
     //   data: JSON.stringify(updatedField),

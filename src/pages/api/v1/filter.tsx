@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // console.log('dataxxxx', parsedData.no_tiket);
   const { no_tiket, no_internet, code_sto, loker, agen_hi, keterangan, perbaikan, bulan, tanggal } = parsedData.data;
 
-  const filteredData = await dbConfig('close_wo')
+  const filteredData = await dbConfig('close_wo_table')
     .select('*', dbConfig.raw("DATE_FORMAT(tanggal, '%Y-%m-%d') as tanggal"))
     .modify(function (queryBuilder) {
       if (no_tiket) {
@@ -89,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // console.log('filteredData', filteredData);
 
   return res.status(200).json({
-    message: 'Data created successfully',
+    message: 'Filter Success',
     data: filteredData,
   });
 }

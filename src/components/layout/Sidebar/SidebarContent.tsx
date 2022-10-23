@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Box, Flex, Text, useColorModeValue, BoxProps, CloseButton } from '@chakra-ui/react';
+import { Box, Flex, Text, BoxProps, CloseButton } from '@chakra-ui/react';
 import { FiHome, FiTrendingUp, FiCompass, FiStar } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import NavItem from './NavItem';
@@ -11,6 +11,7 @@ interface LinkItemProps {
   href: string;
   subMenu: string | null;
 }
+
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/', subMenu: null },
   { name: 'Assurance', icon: FiTrendingUp, href: '/assurance', subMenu: 'assurance' },
