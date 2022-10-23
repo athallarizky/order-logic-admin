@@ -4,14 +4,13 @@ import Knex from 'knex';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
+  const parsedData = JSON.parse(req.body);
+  console.log('tanggallll', typeof parsedData);
 
-  const currentYear = new Date().getFullYear();
+  // const currentYear = new Date().getFullYear();
 
-  const parsedData = JSON.parse(req.body.data);
   // console.log('dataxxxx', parsedData.no_tiket);
-  const { no_tiket, no_internet, code_sto, loker, agen_hi, keterangan, perbaikan, bulan, tanggal } = parsedData;
-
-  console.log('tanggal', tanggal);
+  const { no_tiket, no_internet, code_sto, loker, agen_hi, keterangan, perbaikan, bulan, tanggal } = parsedData.data;
 
   const filteredData = await dbConfig('close_wo')
     .select('*', dbConfig.raw("DATE_FORMAT(tanggal, '%Y-%m-%d') as tanggal"))
@@ -32,13 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         queryBuilder.where('keterangan', keterangan);
       } else if (tanggal) {
         queryBuilder.where('tanggal', tanggal);
-      }
-      if (bulan) {
-        queryBuilder.where(
-          dbConfig.raw(`EXTRACT(MONTH FROM tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [bulan, currentYear]),
-        );
-      } else if (tanggal) {
-        queryBuilder.where(dbConfig.raw(`DAY(tanggal) = ? AND EXTRACT(YEAR FROM tanggal) = ?`, [tanggal, currentYear]));
       }
     });
 

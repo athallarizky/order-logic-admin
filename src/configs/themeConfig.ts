@@ -13,8 +13,8 @@ const config: ThemeConfig = {
 
 const colors = {
   colors: {
-    primary: '#FFE347',
-    secondary: '#B0B0B0',
+    primary: '#DE352D',
+    secondary: '#7C110C',
     black: '#000000',
     white: '#FFFFFF',
     gray: '#808080',
