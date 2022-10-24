@@ -8,12 +8,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .select(
       'close_wo_table.id',
       'no_tiket',
-      'no_internet',
-      'sto_table.sto_name as sto',
       'source',
+      'sto_table.sto_name as sto',
+      'no_internet',
+      'no_telp',
       'agent_table.name_agent as agent',
       'jenis_gangguan_table.jenis_gangguan as jenis_gangguan',
-      'keterangan',
+      'detail_gangguan',
+      'perbaikan',
       'tanggal',
       'close_wo_table.created_at',
     )
