@@ -5,17 +5,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
   /* POSTMAN */
-  const { no_tiket, no_internet, code_sto, perbaikan, loker, agen_hi, keterangan, tanggal } = req.body;
-
-  const create = await dbConfig('close_wo').insert({
+  const {
     no_tiket,
     no_internet,
+    no_telp,
     code_sto,
+    source,
+    code_agent,
+    code_gangguan,
+    detail_gangguan,
     perbaikan,
-    loker,
-    agen_hi,
-    keterangan,
     tanggal,
+  } = req.body;
+
+  const create = await dbConfig('close_wo').insert({
+    no_tiket: no_tiket,
+    no_internet: no_internet,
+    no_telp: no_telp,
+    id_sto: code_sto,
+    source: source,
+    id_agent: code_agent,
+    id_gangguan: code_gangguan,
+    detail_gangguan: detail_gangguan,
+    perbaikan: perbaikan,
+    tanggal: tanggal,
   });
 
   const createdData = await dbConfig('close_wo').where('id', create).first();
