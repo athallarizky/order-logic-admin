@@ -19,16 +19,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } = req.body;
 
   const create = await dbConfig('close_wo').insert({
-    no_tiket: no_tiket,
-    no_internet: no_internet,
-    no_telp: no_telp,
+    no_tiket,
+    no_internet,
+    no_telp,
     id_sto: code_sto,
-    source: source,
+    source,
     id_agent: code_agent,
     id_gangguan: code_gangguan,
-    detail_gangguan: detail_gangguan,
-    perbaikan: perbaikan,
-    tanggal: tanggal,
+    detail_gangguan,
+    perbaikan,
+    tanggal,
   });
 
   const createdData = await dbConfig('close_wo').where('id', create).first();

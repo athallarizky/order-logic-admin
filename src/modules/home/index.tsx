@@ -12,7 +12,7 @@ export type TroubleResponse = {
 };
 
 const Home: React.FC = () => {
-  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, async () => {
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, async () => {
     const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`);
     return response;
   });

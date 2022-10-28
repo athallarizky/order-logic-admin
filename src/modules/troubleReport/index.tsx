@@ -54,7 +54,7 @@ const TroubleReport = () => {
     },
     {
       name: 'No. Telepon',
-      selector: row => row.no_telepon,
+      selector: row => row.no_telp,
     },
     {
       name: 'Jenis Gangguan',
@@ -62,11 +62,15 @@ const TroubleReport = () => {
     },
     {
       name: 'Detail Gangguan',
-      selector: row => row.keterangan,
+      selector: row => row.detail_gangguan,
     },
     {
       name: 'Perbaikan',
       selector: row => row.perbaikan,
+    },
+    {
+      name: 'Agen',
+      selector: row => row.agent,
     },
   ];
 
