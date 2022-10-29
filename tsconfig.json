@@ -8,7 +8,8 @@
       "@/configs/*": ["configs/*"],
       "@/interfaces/*": ["interfaces/*"],
       "@/odules/*": ["modules/*"],
-      "@/pages/*": ["pages/*"]
+      "@/pages/*": ["pages/*"],
+      "@/helper/*": ["helper/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

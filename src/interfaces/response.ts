@@ -38,3 +38,17 @@ export interface JenisGangguanList {
   jenis_gangguan: string;
   created_at: string;
 }
+
+export interface JenisGangguanListResponse {
+  data: JenisGangguanList[];
+}
+
+export interface AgentList {
+  id: number;
+  name_agent: string;
+  created_at: string;
+}
+
+export interface AgentListResponse {
+  data: AgentList[];
+}
