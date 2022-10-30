@@ -55,6 +55,12 @@ const theme = extendTheme(<ThemeOverride>{
           fontSize: '20px',
         },
       },
+      variants: {
+        textLink: {
+          color: 'blue',
+          textDecoration: 'underline',
+        },
+      },
       defaultProps: {
         size: 'md',
       },

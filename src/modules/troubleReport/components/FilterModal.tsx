@@ -20,6 +20,8 @@ import {
   Textarea,
   Text,
 } from '@chakra-ui/react';
+
+// Integrate API
 import sender from 'helper/sender';
 import { useSWRConfig } from 'swr';
 
@@ -46,7 +48,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
 
   const fieldHandler = e => {
     const name = e.target.getAttribute('name');
-    console.log(name);
 
     setFields({
       ...fields,
@@ -57,16 +58,11 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
   const submitHandler = async () => {
     let data = fields;
     if (tanggal !== undefined && tanggal !== '' && tanggal !== null) {
-      console.log('MASUUUKK');
       data = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     }
 
     const responseData = await mutate('/api/v1/filter', sender('/api/v1/filter', { data }));
 
-    // const result = await axios.post('/close-wo-api/filter', {
-    //   data: JSON.stringify(updatedField),
-    // });
-    // console.log(responseData);
     setTroubleData(responseData);
     setFields({
       no_tiket: '',
