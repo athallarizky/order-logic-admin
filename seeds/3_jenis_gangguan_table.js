@@ -29,6 +29,9 @@ exports.seed = function (knex) {
         {
           jenis_gangguan: 'GANTI ONT',
         },
+        {
+          jenis_gangguan: 'ISOLIR',
+        },
       ]);
     });
 };

@@ -15,9 +15,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/', subMenu: null },
   { name: 'Assurance', icon: FiTrendingUp, href: '/assurance', subMenu: 'assurance' },
-  { name: 'Close WO Logic', icon: FiTrendingUp, href: '/close-wo', subMenu: null },
-  { name: 'Rekap WO Logic', icon: FiCompass, href: '#', subMenu: null },
-  { name: 'Performansi', icon: FiStar, href: '#', subMenu: null },
+  { name: 'Performansi', icon: FiStar, href: '/performansi', subMenu: null },
 ];
 
 interface SidebarContentProps extends BoxProps {

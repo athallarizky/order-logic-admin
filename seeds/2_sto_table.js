@@ -9,25 +9,28 @@ exports.seed = function (knex) {
           sto_name: 'KBB',
         },
         {
-          sto_name: 'BIN',
+          sto_name: 'PSM',
+        },
+        {
+          sto_name: 'KBB',
         },
         {
           sto_name: 'KMG',
         },
         {
-          sto_name: 'CPE',
-        },
-        {
-          sto_name: 'KAL',
-        },
-        {
-          sto_name: 'JAG',
+          sto_name: 'KMG',
         },
         {
           sto_name: 'PSM',
         },
         {
-          sto_name: 'TBE',
+          sto_name: 'PSM',
+        },
+        {
+          sto_name: 'KAL',
+        },
+        {
+          sto_name: 'KAL',
         },
       ]);
     });
