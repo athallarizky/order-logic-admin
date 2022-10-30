@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<any> {
   await knex.schema.createTable('close_wo_table', table => {
     table.increments('id').primary();
     table.string('no_tiket');
-    table.integer('no_internet', 30);
+    table.string('no_internet', 30);
     table.integer('no_telp', 14);
     table.integer('id_sto').unsigned().index().references('id').inTable('sto_table').onDelete('SET NULL');
     table.enum('source', ['group', 'draft']).notNullable();
