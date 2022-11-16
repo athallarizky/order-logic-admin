@@ -27,8 +27,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .join('sto_table', 'sto_table.id', '=', 'close_wo_table.id_sto')
     .join('agent_table', 'agent_table.id', '=', 'close_wo_table.id_agent')
     .join('jenis_gangguan_table', 'jenis_gangguan_table.id', '=', 'close_wo_table.id_gangguan')
-    .where(dbConfig.raw("extract(day from tanggal)"),  `${data.daily}`)
-    .orWhere(dbConfig.raw("extract(month from tanggal)"),  `${data.month}`)
+    .where(dbConfig.raw('extract(day from tanggal)'), `${data.daily}`)
+    .orWhere(dbConfig.raw('extract(month from tanggal)'), `${data.month}`)
     .orWhere('close_wo_table.id_sto', `${data.id_sto}`);
 
   return res.status(200).json({

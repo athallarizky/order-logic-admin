@@ -17,6 +17,7 @@ const Home: React.FC = () => {
     return response;
   });
   const router = useRouter();
+
   return (
     <PageContainer>
       <Box className="greetings">
