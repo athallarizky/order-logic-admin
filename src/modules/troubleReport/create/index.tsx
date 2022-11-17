@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Flex,
   Text,
-  Box,
   FormControl,
   FormLabel,
   Input,
@@ -102,10 +101,7 @@ const TroubleReport = () => {
 
   const submitHandler = async () => {
     setIsFailed(false);
-    const { no_tiket, no_internet, no_telp, id_sto, source, id_agent, id_gangguan, detail_gangguan, perbaikan } =
-      fields;
-
-    console.log('fields', fields);
+    const { no_tiket, no_internet, no_telp, id_sto, source, id_agent, id_gangguan, perbaikan } = fields;
 
     const stillEmpty =
       isEmptyString(no_tiket) ||
@@ -123,18 +119,11 @@ const TroubleReport = () => {
 
     let updatedField = fields;
     if (tanggal && tanggal !== null) {
-      console.log('MASUUUKK');
       updatedField = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     }
 
-    console.log('cxzcxz', updatedField);
-    // const updatedField = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
-    // axios.post('/close-wo-api/create', {
-    //   data: JSON.stringify(updatedField),
-    // });
-
     await sender('/api/v1/create', { data: updatedField });
-    // mutate(`/api/v1/`);
+
     setFields({
       no_tiket: '',
       no_internet: '',
@@ -163,13 +152,18 @@ const TroubleReport = () => {
           <Flex className="form-group" flexDirection="column" width="100%">
             {/* Date and Source */}
 
-            <FormControl mb="2vh">
+            <FormControl mb="2vh" width="48%">
               <FormLabel>
                 <Text>
                   Tanggal <span style={{ color: 'red' }}>*</span>
                 </Text>
               </FormLabel>
-              <DatePicker selected={tanggal} onChange={(date: Date) => setTanggal(date)} dateFormat="dd-MM-yyyy" />
+              <DatePicker
+                selected={tanggal}
+                onChange={(date: Date) => setTanggal(date)}
+                dateFormat="dd-MM-yyyy"
+                className="datepicker-input"
+              />
             </FormControl>
 
             {/* No Ticket and No Ticket*/}

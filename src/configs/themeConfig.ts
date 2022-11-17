@@ -93,15 +93,6 @@ const theme = extendTheme(<ThemeOverride>{
       html: {
         scrollBehavior: 'smooth',
       },
-      '.react-player': {
-        background: 'black',
-      },
-      '.react-player > video': {
-        objectFit: 'cover',
-      },
-      '.react-player-loading > video': {
-        objectFit: 'contain',
-      },
       '.pos-absolute-xcenter': {
         position: 'absolute',
         left: '50%',
@@ -116,6 +107,15 @@ const theme = extendTheme(<ThemeOverride>{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+      },
+      '.datepicker-input': {
+        // border: '1px solid #e5e5e5',
+        background: '#e5e5e5',
+        padding: '5px 15px',
+        fontWeight: 'bold',
+        borderRadius: '4px',
+        minHeight: '40px',
+        width: '100%',
       },
     },
   },
