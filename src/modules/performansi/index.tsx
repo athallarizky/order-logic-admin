@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 
 // Libraries
@@ -5,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 // helper
 import { format } from 'date-fns';
 import sender from 'helper/sender';
@@ -13,15 +15,40 @@ import sender from 'helper/sender';
 import { Flex, Text, Button, FormControl, FormLabel, Select } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
 
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, ChartDataLabels);
 
 export const options = {
   responsive: true,
   plugins: {
+    ChartDataLabels,
+    datalabels: {
+      formatter(value, context) {
+        return `${(Math.round(value * 100) / 100).toFixed(2)}%`;
+      },
+      labels: {
+        title: {
+          color: 'white',
+        },
+      },
+    },
     legend: {
       // position: 'bottom' as const,
       display: false,
     },
+    // tooltips: {
+    //   callbacks: {
+    //     label: (tooltipItem, data) => {
+    //       const dataset = data.datasets[tooltipItem.datasetIndex];
+    //       const meta = dataset._meta[Object.keys(dataset._meta)[0]];
+    //       const { total } = meta;
+    //       const currentValue = tooltipItem?.value;
+    //       const percentage = parseFloat(((currentValue / total) * 100).toFixed(1));
+    //       return `${currentValue} (${percentage}%)`;
+    //     },
+    //     title: tooltipItem => `${tooltipItem[0]?.label}`,
+    //   },
+    // },
+
     title: {
       display: false,
       text: 'Bar Chart',
@@ -47,7 +74,7 @@ const Performansi = () => {
   const randomColorGenerator = () => Math.floor(Math.random() * 16777215).toString(16);
   const agentMapping = agentData => {
     const agentName = agentData.map(data => data.name_agent);
-    const agentValue = agentData.map(data => data.hasil);
+    const agentValue = agentData.map(data => data.hasil * 100);
     const generatedColor = [...Array(agentData.length)].map(color => `#${randomColorGenerator()}`);
 
     const datasets = [
@@ -63,7 +90,7 @@ const Performansi = () => {
 
   const jenisGangguanMapping = jenisGangguanData => {
     const jenisGangguanName = jenisGangguanData.map(data => data.jenis_gangguan);
-    const jenisGangguanValue = jenisGangguanData.map(data => data.hasil);
+    const jenisGangguanValue = jenisGangguanData.map(data => data.hasil * 100);
     const generatedColor = [...Array(jenisGangguanData.length)].map(_ => `#${randomColorGenerator()}`);
 
     const datasets = [
@@ -204,15 +231,13 @@ const Performansi = () => {
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data Agent
             </Text>
-            {/* <Doughnut data={radd} /> */}
-            {<Doughnut data={agentMapping(responseData.agent)} />}
+            {<Doughnut data={agentMapping(responseData.agent)} options={options} />}
           </Flex>
           <Flex flexDirection="column" className="agent-chart-wrapper" mx="10px" width="500px">
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data Gangguan
             </Text>
-            {/* <Doughnut data={radd} /> */}
-            {<Doughnut data={jenisGangguanMapping(responseData.jenis_gangguan)} />}
+            {<Doughnut data={jenisGangguanMapping(responseData.jenis_gangguan)} options={options} />}
           </Flex>
 
           <Flex width="100%" flexDirection="column" alignItems="center" mt="5vh">

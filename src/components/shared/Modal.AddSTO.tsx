@@ -13,7 +13,10 @@ import {
   Flex,
   Text,
   Tag,
+  Box,
 } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
+
 import type { STOList } from '@/interfaces/response';
 
 // Integrate API
@@ -32,7 +35,7 @@ export interface STOListResponse {
 
 const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
   const [STOCode, setSTOCode] = useState<string>('');
-  // const { mutate } = useSWR();
+  const [onEdit, setOnEdit] = useState<boolean>(false);
 
   const { data: sto_data } = useSWR(
     `/api/v1/sto/`,
@@ -51,6 +54,11 @@ const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
     setSTOCode('');
   };
 
+  const deleteHandler = async id_sto => {
+    await sender('/api/v1/sto/delete', { data: { id_sto } }, 'DELETE');
+    mutate(`/api/v1/sto/`);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -62,10 +70,36 @@ const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
             <Text mb="2vh">Available STO Code:</Text>
             <Flex flexWrap="wrap">
               {sto_data?.data?.map(code => (
-                <Tag margin="2px" size="sm" padding="5px" variant="solid" colorScheme="red">
+                <Tag margin="5px" size="sm" padding="5px" variant="solid" colorScheme="red" position="relative">
+                  {onEdit && (
+                    <Flex
+                      justify="center"
+                      align="center"
+                      borderRadius="20px"
+                      position="absolute"
+                      background="white"
+                      width="20px"
+                      height="20px"
+                      right="-8px"
+                      cursor="pointer"
+                      top="-8px"
+                      zIndex="2"
+                      color="primary"
+                      border="2px solid"
+                      borderColor="primary"
+                      onClick={() => deleteHandler(code.id)}
+                    >
+                      <CloseIcon w={2} h={2} />
+                    </Flex>
+                  )}
                   {code.sto_name}
                 </Tag>
               ))}
+            </Flex>
+            <Flex mt="12px" justify="center">
+              <Text variant="textLink" fontSize="18px" cursor="pointer" onClick={() => setOnEdit(!onEdit)}>
+                {onEdit ? 'Simpan' : 'Hapus STO'}
+              </Text>
             </Flex>
           </Flex>
           <FormControl mb="3vh">

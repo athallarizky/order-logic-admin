@@ -23,6 +23,7 @@
     "bcrypt": "^5.1.0",
     "bcrypt-nodejs": "^0.0.3",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.1.0",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.2",
     "framer-motion": "^7.5.0",

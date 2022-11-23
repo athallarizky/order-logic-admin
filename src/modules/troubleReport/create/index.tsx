@@ -154,7 +154,7 @@ const TroubleReport = () => {
 
             <FormControl mb="2vh" width="48%">
               <FormLabel>
-                <Text>
+                <Text variant="textInput">
                   Tanggal <span style={{ color: 'red' }}>*</span>
                 </Text>
               </FormLabel>
@@ -170,7 +170,7 @@ const TroubleReport = () => {
             <Flex mb="2vh" justify="space-between">
               <FormControl width="48%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     No Tiket <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -181,11 +181,13 @@ const TroubleReport = () => {
                   isRequired
                   isInvalid={isEmptyString(fields.no_tiket)}
                   value={fields.no_tiket}
+                  variant="outline"
+                  color="black"
                 />
               </FormControl>
               <FormControl width="48%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     Source <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -196,6 +198,8 @@ const TroubleReport = () => {
                   isRequired
                   isInvalid={fields.source === ''}
                   value={fields.source}
+                  variant="outline"
+                  color="black"
                 >
                   <option value="draft">Draft</option>
                   <option value="group">Group</option>
@@ -206,7 +210,7 @@ const TroubleReport = () => {
             <Flex mb="2vh" justify="space-between">
               <FormControl width="48%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     No Internet <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -217,11 +221,13 @@ const TroubleReport = () => {
                   isRequired
                   isInvalid={isEmptyString(fields.no_internet)}
                   value={fields.no_internet}
+                  variant="outline"
+                  color="black"
                 />
               </FormControl>
               <FormControl width="48%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     No Telepon <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -232,6 +238,8 @@ const TroubleReport = () => {
                   isRequired
                   isInvalid={isEmptyString(fields.no_telp)}
                   value={fields.no_telp}
+                  variant="outline"
+                  color="black"
                 />
               </FormControl>
             </Flex>
@@ -239,7 +247,7 @@ const TroubleReport = () => {
             <Flex align="center" mb="2vh">
               <FormControl width="100%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     Kode STO <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -253,13 +261,17 @@ const TroubleReport = () => {
                     onChange={e => fieldHandler(e)}
                     isRequired
                     isInvalid={fields.id_sto === null}
+                    variant="outline"
+                    color="black"
                   >
                     {sto_data?.data?.map(sto => (
                       <option value={sto.id}>{sto.sto_name}</option>
                     ))}
                   </Select>
                   <Button onClick={() => setActivePopup('add-sto')} background="white" color="primary" mr={3}>
-                    <Text fontSize="20px">+ Tambah Kode STO</Text>
+                    <Text fontSize="20px" variant="textLink">
+                      + Tambah Kode STO
+                    </Text>
                   </Button>
                 </Flex>
               </FormControl>
@@ -268,7 +280,7 @@ const TroubleReport = () => {
             <Flex align="center" mb="2vh">
               <FormControl width="100%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     Jenis Gangguan <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -282,13 +294,17 @@ const TroubleReport = () => {
                     onChange={e => fieldHandler(e)}
                     isRequired
                     isInvalid={fields.id_gangguan === null}
+                    variant="outline"
+                    color="black"
                   >
                     {jenis_gangguan?.data?.map(gangguan => (
                       <option value={gangguan.id}>{gangguan.jenis_gangguan}</option>
                     ))}
                   </Select>
                   <Button onClick={() => setActivePopup('add-gangguan')} background="white" color="primary" mr={3}>
-                    <Text fontSize="20px">+ Tambah Jenis Gangguan</Text>
+                    <Text fontSize="20px" variant="textLink">
+                      + Tambah Jenis Gangguan
+                    </Text>
                   </Button>
                 </Flex>
               </FormControl>
@@ -297,7 +313,7 @@ const TroubleReport = () => {
             <Flex align="center" mb="2vh">
               <FormControl width="100%">
                 <FormLabel>
-                  <Text>
+                  <Text variant="textInput">
                     Nama Agent <span style={{ color: 'red' }}>*</span>
                   </Text>
                 </FormLabel>
@@ -311,13 +327,17 @@ const TroubleReport = () => {
                     onChange={e => fieldHandler(e)}
                     isRequired
                     isInvalid={fields.id_agent === null}
+                    variant="outline"
+                    color="black"
                   >
                     {agent_data?.data?.map(agent => (
                       <option value={agent.id}>{agent.name_agent}</option>
                     ))}
                   </Select>
                   <Button onClick={() => setActivePopup('add-agent')} background="white" color="primary" mr={3}>
-                    <Text fontSize="20px">+ Tambah Agen Baru</Text>
+                    <Text fontSize="20px" variant="textLink">
+                      + Tambah Agen Baru
+                    </Text>
                   </Button>
                 </Flex>
               </FormControl>
@@ -325,7 +345,7 @@ const TroubleReport = () => {
 
             <FormControl>
               <FormLabel>
-                <Text>
+                <Text variant="textInput">
                   Perbaikan <span style={{ color: 'red' }}>*</span>
                 </Text>
               </FormLabel>
@@ -336,15 +356,23 @@ const TroubleReport = () => {
                 isRequired
                 isInvalid={isEmptyString(fields.perbaikan)}
                 value={fields.perbaikan}
+                variant="outline"
+                color="black"
               />
             </FormControl>
 
             <FormControl mb="2vh">
               <FormLabel>Detail Gangguan</FormLabel>
-              <Textarea onChange={e => fieldHandler(e)} name="detail_gangguan" value={fields.detail_gangguan} />
+              <Textarea
+                onChange={e => fieldHandler(e)}
+                name="detail_gangguan"
+                value={fields.detail_gangguan}
+                variant="textInput"
+                color="black"
+              />
             </FormControl>
 
-            <Text>
+            <Text variant="textInput">
               <span style={{ color: 'red' }}>*</span>wajib diisi
             </Text>
 
@@ -358,7 +386,9 @@ const TroubleReport = () => {
                 )}
               </Stack>
               <Button width="20%" background="primary" color="white" onClick={() => submitHandler()} height="50px">
-                <Text fontSize="20px">Simpan</Text>
+                <Text fontSize="20px" variant="textInput">
+                  Simpan
+                </Text>
               </Button>
             </Flex>
           </Flex>

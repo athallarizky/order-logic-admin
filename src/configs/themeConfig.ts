@@ -60,6 +60,9 @@ const theme = extendTheme(<ThemeOverride>{
           color: 'blue',
           textDecoration: 'underline',
         },
+        textInput: {
+          color: 'black',
+        },
       },
       defaultProps: {
         size: 'md',
@@ -89,6 +92,7 @@ const theme = extendTheme(<ThemeOverride>{
         MozOsxFontSmoothing: 'grayscale',
         WebkitFontSmoothing: 'antialiased',
         textRendering: 'optimizeLegibility',
+        color: 'black',
       },
       html: {
         scrollBehavior: 'smooth',
@@ -116,6 +120,7 @@ const theme = extendTheme(<ThemeOverride>{
         borderRadius: '4px',
         minHeight: '40px',
         width: '100%',
+        color: 'black',
       },
     },
   },
