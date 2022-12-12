@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
 import bcrypt from 'bcrypt';
-import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+// import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+
 const jwt = require('jsonwebtoken');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -34,10 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         message: 'User does not exist',
       });
     }
-  } else {
-    return res.status(400).json({
-      status: 400,
-      message: 'there is an empty field.',
-    });
   }
+  return res.status(400).json({
+    status: 400,
+    message: 'there is an empty field.',
+  });
 }
