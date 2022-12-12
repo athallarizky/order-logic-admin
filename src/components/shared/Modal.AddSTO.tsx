@@ -104,7 +104,14 @@ const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
           </Flex>
           <FormControl mb="3vh">
             <FormLabel>Kode</FormLabel>
-            <Input type="text" onChange={e => setSTOCode(e.target.value)} value={STOCode} maxLength={3} />
+            <Input
+              type="text"
+              onChange={e => setSTOCode(e.target.value)}
+              value={STOCode}
+              maxLength={3}
+              variant="outline"
+              color="black"
+            />
           </FormControl>
           <Flex justify="center">
             <Button background="primary" color="white" onClick={() => submitHandler()} marginX="10px" height="40px">

@@ -1,9 +1,11 @@
 /* eslint-disable no-param-reassign */
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
-// import { sq } from 'date-fns/locale';
+import apiHandler from '@/helper/api/api';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default apiHandler(handler);
+
+export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
   const parsedData = JSON.parse(req.body);
   // const { data } = parsedData.data.data;

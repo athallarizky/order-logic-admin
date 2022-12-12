@@ -55,6 +55,11 @@ const ModalAddAgent: React.FC<ModalAddAgentProps> = ({ isOpen, onClose }) => {
     setAgentName('');
   };
 
+  const deleteHandler = async id_agent => {
+    await sender('/api/v1/agent/delete', { data: { id_agent } }, 'DELETE');
+    mutate(`/api/v1/agent/`);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -77,7 +82,13 @@ const ModalAddAgent: React.FC<ModalAddAgentProps> = ({ isOpen, onClose }) => {
                     <Tr>
                       <Td>{gangguan.name_agent}</Td>
                       <Td textAlign="center">
-                        <Button background="primary" color="white" disabled marginX="10px" height="25px">
+                        <Button
+                          background="primary"
+                          color="white"
+                          marginX="10px"
+                          height="25px"
+                          onClick={() => deleteHandler(gangguan.id)}
+                        >
                           <Text fontSize="15px">Hapus</Text>
                         </Button>
                       </Td>
@@ -89,7 +100,13 @@ const ModalAddAgent: React.FC<ModalAddAgentProps> = ({ isOpen, onClose }) => {
           </Flex>
           <FormControl mb="3vh">
             <FormLabel>Nama Agent</FormLabel>
-            <Input type="text" onChange={e => setAgentName(e.target.value)} value={agentName} />
+            <Input
+              type="text"
+              onChange={e => setAgentName(e.target.value)}
+              value={agentName}
+              variant="outline"
+              color="black"
+            />
           </FormControl>
           <Flex justify="center">
             <Button background="primary" color="white" onClick={() => submitHandler()} marginX="10px" height="40px">

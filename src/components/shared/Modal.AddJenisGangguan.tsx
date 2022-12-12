@@ -52,6 +52,11 @@ const ModalAddJenisGangguan: React.FC<ModalAddJenisGangguanProps> = ({ isOpen, o
     setJenisGangguan('');
   };
 
+  const deleteHandler = async id_jenis_gangguan => {
+    await sender('/api/v1/jenis_gangguan/delete', { data: { id_jenis_gangguan } }, 'DELETE');
+    mutate(`/api/v1/jenis_gangguan/`);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -74,7 +79,13 @@ const ModalAddJenisGangguan: React.FC<ModalAddJenisGangguanProps> = ({ isOpen, o
                     <Tr>
                       <Td>{gangguan.jenis_gangguan}</Td>
                       <Td textAlign="center">
-                        <Button background="primary" color="white" disabled marginX="10px" height="25px">
+                        <Button
+                          background="primary"
+                          color="white"
+                          marginX="10px"
+                          height="25px"
+                          onClick={() => deleteHandler(gangguan.id)}
+                        >
                           <Text fontSize="15px">Hapus</Text>
                         </Button>
                       </Td>
@@ -86,7 +97,13 @@ const ModalAddJenisGangguan: React.FC<ModalAddJenisGangguanProps> = ({ isOpen, o
           </Flex>
           <FormControl mb="3vh">
             <FormLabel>Jenis Gangguan</FormLabel>
-            <Input type="text" onChange={e => setJenisGangguan(e.target.value)} value={jenisGangguan} />
+            <Input
+              type="text"
+              onChange={e => setJenisGangguan(e.target.value)}
+              value={jenisGangguan}
+              variant="outline"
+              color="black"
+            />
           </FormControl>
           <Flex justify="center">
             <Button background="primary" color="white" onClick={() => submitHandler()} marginX="10px" height="40px">
