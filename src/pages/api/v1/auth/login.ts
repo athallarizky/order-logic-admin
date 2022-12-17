@@ -8,11 +8,12 @@ const jwt = require('jsonwebtoken');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
-  const parsedData = req.body;
-  if (parsedData.nik && parsedData.password) {
-    const user = await dbConfig('users_table').where('national_identity_number', `${parsedData.nik}`);
+  const { data } = JSON.parse(req.body);
+  console.log('parsedData', data.nik);
+  if (data.nik && data.password) {
+    const user = await dbConfig('users_table').where('national_identity_number', `${data.nik}`);
     if (user[0]) {
-      const validPassword = await bcrypt.compare(parsedData.password, user[0].password);
+      const validPassword = await bcrypt.compare(data.password, user[0].password);
       if (validPassword) {
         const userToken = user[0];
         const accessToken = jwt.sign({ userToken }, process.env.ACCESS_TOKEN_SECRET, {
