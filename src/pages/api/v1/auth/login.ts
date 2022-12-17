@@ -12,21 +12,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (parsedData.nik && parsedData.password) {
     const user = await dbConfig('users_table').where('national_identity_number', `${parsedData.nik}`);
     if (user[0]) {
+      if (user[0].status == "Tidak Aktif") {
+        return res.status(400).json({
+          status: 400,
+          error: 'Status Inactive.',
+        });
+      }
       const validPassword = await bcrypt.compare(parsedData.password, user[0].password);
       if (validPassword) {
         const userToken = user[0];
         const accessToken = jwt.sign({ userToken }, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: '7d',
+          expiresIn: '1d',
         });
-        res.setHeader('x-access-token', accessToken);
-        res.status(200).json({
+        res.setHeader('authorization', accessToken);
+        return res.status(200).json({
           status: 200,
-          message: 'Valid password',
-          token: accessToken,
+          message: 'Success login.',
+          data: {
+            user: {
+              name: user[0].full_name,
+              national_identity_number: user[0].national_identity_number,
+              level: user[0].level,
+              created_at: user[0].created_at,
+            },
+            token: accessToken,
+          },
         });
       } else {
-        res.status(400).json({
-          status: 200,
+        return res.status(400).json({
+          status: 400,
           error: 'Invalid Password',
         });
       }
