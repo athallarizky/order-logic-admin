@@ -7,13 +7,11 @@ function apiHandler(handler) {
   return async (req, res) => {
     try {
       // global middleware
-      await jwtMiddleware(req, res);
+      await jwtMiddleware(req, res, handler);
 
-      // route handler
-      await handler(req, res);
     } catch (err) {
       // global error handler
-      errorHandler(err, res);
+      return errorHandler(err, res);
     }
   };
 }
