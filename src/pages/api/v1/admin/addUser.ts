@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
 import apiHandler, { ExtractJWT } from '@/helper/api/api';
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 export default apiHandler(handler);
 
@@ -10,15 +10,14 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (admin['level'] !== 'Admin') return res.status(405).json({ message: 'You are not an admin.' });
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed.' });
 
-//   const parsedData = JSON.parse(req.body);
-  const parsedData = req.body;
+  const parsedData = JSON.parse(req.body);
 
-  const { full_name, national_identity_number, password, level, status } = parsedData;
+  const { full_name, national_identity_number, password, level, status } = parsedData.data;
   if (!full_name || !national_identity_number || !password || !level || !status) {
-    return res.status(400).json({ status: 400, message: 'full_name, national_identity_number, password, level, status, required' });
+    return res
+      .status(400)
+      .json({ status: 400, message: 'full_name, national_identity_number, password, level, status, required' });
   }
-
-  console.log(full_name, national_identity_number, password, level, status)
   await dbConfig('users_table').insert({
     full_name: full_name,
     national_identity_number: national_identity_number,
