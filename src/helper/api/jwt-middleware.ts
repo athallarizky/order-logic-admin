@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-const util = require('util');
-
 export default jwtMiddleware;
 
 function jwtMiddleware(req, res, handler) {
