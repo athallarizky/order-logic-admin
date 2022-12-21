@@ -6,6 +6,8 @@ export async function up(knex: Knex): Promise<void> {
     table.string('full_name', 100).notNullable();
     table.string('national_identity_number', 17).notNullable();
     table.string('password', 100).notNullable();
+    table.enum('level', ['Member', 'Admin']).notNullable();
+    table.enum('status', ['Aktif', 'Tidak Aktif']).notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
   });
 }

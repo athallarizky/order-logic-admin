@@ -39,3 +39,4 @@ next-env.d.ts
 # custom
 .vscode
 .vscode/settings.json
+config.bat

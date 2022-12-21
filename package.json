@@ -26,7 +26,6 @@
     "chartjs-plugin-datalabels": "^2.1.0",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",
-    "dotenv": "^16.0.2",
     "express-jwt": "^7.7.7",
     "framer-motion": "^7.5.0",
     "isomorphic-unfetch": "^3.1.0",
