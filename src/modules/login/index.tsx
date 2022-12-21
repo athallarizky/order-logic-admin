@@ -1,15 +1,29 @@
-import React, { useState, useCallback } from 'react';
-import { Flex, Heading, FormControl, FormLabel, Button, Input } from '@chakra-ui/react';
-import useSWR, { mutate } from 'swr';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import {
+  Flex,
+  Heading,
+  FormControl,
+  FormLabel,
+  Button,
+  Input,
+  Text,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react';
+// import useSWR, { mutate } from 'swr';
 import sender from 'helper/sender';
 import { isEmptyString } from '@/helper/utils';
+import axios from 'configs/axiosConfig';
 
 const Login = () => {
   const [fields, setFields] = useState({
     nik: '',
     password: '',
   });
-  const [isFailed, setIsFailed] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const router = useRouter();
 
   const fieldHandler = e => {
     const name = e.target.getAttribute('name');
@@ -20,22 +34,44 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
+    setErrorMessage('');
     const stillEmpty = isEmptyString(fields.nik) || isEmptyString(fields.password);
 
     const stillNull = fields.password === null || fields.nik === null;
 
     if (stillEmpty || stillNull) {
-      setIsFailed(true);
+      setErrorMessage('Fields is Empty');
       return 'Failed';
     }
 
-    const response = await sender('/api/v1/auth/login', { data: fields });
-    console.log('response', response);
+    let response;
 
-    setFields({
-      nik: '',
-      password: '',
-    });
+    try {
+      response = await sender('/api/v1/auth/login', { data: fields });
+      if (response.status === 200) {
+        window.localStorage.setItem('user', JSON.stringify(response.data.user));
+        window.localStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common['Authorization'] = response.data.token;
+        await router.push('/');
+      }
+    } catch (error) {
+      // console.log('error.response', error.response);
+      setErrorMessage(error.response.data.message);
+    }
+
+    // console.log(response);
+
+    // console.log('response.status', response);
+
+    // setFields({
+    //   nik: '',
+    //   password: '',
+    // });
+    // if (response) {
+    //   return 'success';
+    // }
+
+    // return 'failed';
 
     return response;
   };
@@ -51,11 +87,17 @@ const Login = () => {
             <FormLabel>NIK</FormLabel>
             <Input type="text" name="nik" onChange={e => fieldHandler(e)} />
           </FormControl>
-          <FormControl mb="8vh">
+          <FormControl mb="2vh">
             <FormLabel>Password</FormLabel>
             <Input type="text" name="password" onChange={e => fieldHandler(e)} />
           </FormControl>
-          <Button bg="primary" w="30%" color="white" mx="auto" onClick={() => handleSubmit()}>
+          {errorMessage !== '' && (
+            <Alert status="error" mb="3vh">
+              <AlertTitle>Failed!</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
+          <Button bg="primary" w="30%" color="white" mb="2vh" mx="auto" onClick={() => handleSubmit()}>
             Login
           </Button>
         </Flex>

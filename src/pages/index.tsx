@@ -1,9 +1,10 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { NextPage } from '@/interfaces/next';
+import withAuth from 'hooks/withAuth';
 
 const Home = dynamic(() => import('modules/home'), { ssr: false });
 
 const HomePage: NextPage = () => <Home />;
 
-export default HomePage;
+export default withAuth(HomePage);

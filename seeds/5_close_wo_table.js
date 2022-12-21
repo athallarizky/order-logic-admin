@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable prettier/prettier */
 /* eslint-disable max-len */
 exports.seed = function (knex) {
   // Deletes ALL existing entries

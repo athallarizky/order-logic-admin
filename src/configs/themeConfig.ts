@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig, ThemeOverride } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig, ThemeOverride, Input } from '@chakra-ui/react';
 
 const robotoRegular = 'RobotoRegular, sans-serif';
 const robotoBold = 'RobotoBold, sans-serif';
@@ -156,6 +156,7 @@ const theme = extendTheme(<ThemeOverride>{
   },
   config,
 });
+Input.defaultProps = { ...Input.defaultProps, borderColor: 'black' };
 type CustomTheme = typeof theme & CustomColors;
 export type { CustomTheme };
 export { theme };

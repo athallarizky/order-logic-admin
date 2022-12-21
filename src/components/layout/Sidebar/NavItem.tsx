@@ -11,7 +11,7 @@ interface NavItemProps extends FlexProps {
   icon: IconType;
   navUrl: string;
   children: string;
-  subMenu: string | null;
+  subMenu?: string | null;
 }
 const NavItem = ({ icon, children, navUrl, subMenu, ...rest }: NavItemProps) => {
   const router = useRouter();
@@ -84,6 +84,10 @@ const NavItem = ({ icon, children, navUrl, subMenu, ...rest }: NavItemProps) => 
       {subMenu && renderSubMenu(subMenu)}
     </Link>
   );
+};
+
+NavItem.defaultProps = {
+  subMenu: null,
 };
 
 export default NavItem;

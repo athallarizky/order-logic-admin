@@ -38,6 +38,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
           </NavItem>
         </Link>
       ))}
+      <Link href="/ads">
+        <NavItem icon={FiStar} navUrl="/dsaa">
+          Logout
+        </NavItem>
+      </Link>
     </Box>
   );
 };

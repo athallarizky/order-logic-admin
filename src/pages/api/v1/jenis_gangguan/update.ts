@@ -9,8 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ status: 400, message: 'request required' });
   }
 
-  await dbConfig('jenis_gangguan_table').where({ id: id }).update({
-    jenis_gangguan: jenis_gangguan,
+  await dbConfig('jenis_gangguan_table').where({ id }).update({
+    jenis_gangguan,
   });
 
   return res.status(200).json({

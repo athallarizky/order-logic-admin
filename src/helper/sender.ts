@@ -1,9 +1,14 @@
-export default async function post(url, args, method = 'POST') {
-  console.log('method', method);
-  const res = await fetch(url, {
+import axios from 'configs/axiosConfig';
+
+export default async function postData(url, data, method = 'POST') {
+  const options = {
     method,
-    body: JSON.stringify(args),
-  });
-  const { data } = await res.json();
-  return data;
+    url,
+    data,
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  };
+  const response = await axios(options);
+  return response.data;
 }

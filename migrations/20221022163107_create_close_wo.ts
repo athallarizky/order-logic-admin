@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Knex from 'knex';
 
 export async function up(knex: Knex): Promise<any> {
