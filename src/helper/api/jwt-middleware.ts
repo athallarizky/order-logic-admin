@@ -1,23 +1,23 @@
 const jwt = require('jsonwebtoken');
 
-const util = require('util');
-
 export default jwtMiddleware;
 
-function jwtMiddleware(req, res) {
+function jwtMiddleware(req, res, handler) {
   try {
     const token = req.headers['authorization'];
-    console.log(token)
     if (token == undefined || token.length <= 0) {
-      res.status(401).json({
+      return res.status(401).json({
         status: 401,
         message: 'YOU ARE NOT AUTHORIZED',
       });
     }
+    // route handler
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET).userToken;
-    console.log(decoded);
+    if (decoded['id']) {
+      return handler(req, res);
+    }
   } catch (err) {
-    res.status(401).json({
+    return res.status(401).json({
       status: 401,
       message: 'YOU ARE NOT AUTHORIZED',
     });
