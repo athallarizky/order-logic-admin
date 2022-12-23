@@ -38,9 +38,13 @@ const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
   const [onEdit, setOnEdit] = useState<boolean>(false);
 
   const { data: sto_data } = useSWR(
-    `/api/v1/sto/`,
+    `fetchSTOData`,
     async () => {
-      const response = await fetcher<STOListResponse>(`/api/v1/sto/`);
+      const response = await fetcher<STOListResponse>(`/api/v1/sto/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -49,14 +53,14 @@ const ModalAddSto: React.FC<ModalAddStoProps> = ({ isOpen, onClose }) => {
   );
 
   const submitHandler = async () => {
-    await sender('/api/v1/sto/create', { data: { sto_name: STOCode.toUpperCase() } });
-    mutate(`/api/v1/sto/`);
+    await sender('/api/v1/sto/create', { data: { sto_name: STOCode.toUpperCase() } }, localStorage.getItem('token'));
+    mutate(`fetchSTOData`);
     setSTOCode('');
   };
 
   const deleteHandler = async id_sto => {
-    await sender('/api/v1/sto/delete', { data: { id_sto } }, 'DELETE');
-    mutate(`/api/v1/sto/`);
+    await sender('/api/v1/sto/delete', { data: { id_sto } }, localStorage.getItem('token'), 'DELETE');
+    mutate(`fetchSTOData`);
   };
 
   return (

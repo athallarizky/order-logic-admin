@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
+import apiHandler from '@/helper/api/api';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ status: 405, message: 'Method not allowed' });
 
-  const parsedData = JSON.parse(req.body);
-  const { jenis_gangguan } = parsedData.data;
+  // const parsedData = JSON.parse(req.body);
+  const { jenis_gangguan } = req.body.data;
   if (!jenis_gangguan) {
     return res.status(400).json({ status: 400, message: 'jenis_gangguan required' });
   }
@@ -18,3 +19,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     message: 'created successfully',
   });
 }
+
+export default apiHandler(handler);

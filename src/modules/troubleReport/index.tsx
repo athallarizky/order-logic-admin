@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import fetch from 'helper/fetcher';
+import useSWR, { mutate } from 'swr';
+import fetcher from 'helper/fetcher';
 import { FormWoDataListResponse } from 'interfaces/response';
 import DataTable from 'react-data-table-component';
 import { format } from 'date-fns';
+import useIsMounted from 'hooks/useIsMounted';
 // Components
 import { Box, Flex, Text, Button, useDisclosure } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
@@ -20,13 +21,23 @@ const TroubleReport = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [troubleData, setTroubleData] = useState(null);
   const router = useRouter();
-  const [shouldFetch, setShouldFetch] = useState<boolean>(false);
 
-  useSWR(!troubleData || shouldFetch ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/` : null, async () => {
-    const response = await fetch<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`);
-    setTroubleData(response.data);
-    setShouldFetch(false);
-  });
+  const isMounted = useIsMounted();
+
+  useSWR(
+    isMounted ? `fetchTroubleData` : null,
+    async () => {
+      const response = await fetcher<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
+      setTroubleData(response.data);
+    },
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   const columns = [
     {
@@ -74,8 +85,8 @@ const TroubleReport = () => {
     },
   ];
 
-  const handleResetFilter = async () => {
-    setShouldFetch(true);
+  const handleResetFilter = () => {
+    mutate('fetchTroubleData');
   };
 
   return (

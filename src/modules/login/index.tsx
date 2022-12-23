@@ -47,31 +47,18 @@ const Login = () => {
     let response;
 
     try {
-      response = await sender('/api/v1/auth/login', { data: fields });
+      response = await sender('/api/v1/auth/login', { data: fields }, localStorage.getItem('token'));
       if (response.status === 200) {
         window.localStorage.setItem('user', JSON.stringify(response.data.user));
         window.localStorage.setItem('token', response.data.token);
         axios.defaults.headers.common['Authorization'] = response.data.token;
         await router.push('/');
+      } else {
+        setErrorMessage(response.message);
       }
     } catch (error) {
-      // console.log('error.response', error.response);
-      setErrorMessage(error.response.data.message);
+      console.log('error.response', error.response);
     }
-
-    // console.log(response);
-
-    // console.log('response.status', response);
-
-    // setFields({
-    //   nik: '',
-    //   password: '',
-    // });
-    // if (response) {
-    //   return 'success';
-    // }
-
-    // return 'failed';
 
     return response;
   };

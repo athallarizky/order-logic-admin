@@ -4,40 +4,34 @@ import useSWR from 'swr';
 import fetcher from 'helper/fetcher';
 import { FormWoDataListResponse } from 'interfaces/response';
 import { useRouter } from 'next/router';
+import useIsMounted from 'hooks/useIsMounted';
 
 import PageContainer from '@/components/layout/PageContainer';
+
+// import axios from 'axios';
 
 export type TroubleResponse = {
   data: FormWoDataListResponse[];
 };
 
 const Home: React.FC = () => {
-  // const { data } = useSWR(`hitApi`, async () => {
-  //   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, localStorage.getItem('token'));
+  // const { data: report_data } = useSWR(`totalTrouble`, async () => {
+  //   const response = await fetcher('', localStorage.getItem('token'));
   //   return response;
-  // }),{
-  //   revalidateOnFocus: false,
-  // };
+  // });
 
-  // console.log('dadsa', localStorage.getItem('token'));
+  const isMounted = useIsMounted();
 
-  const { data, error } = useSWR(
-    [`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, localStorage.getItem('token')],
-    fetcher,
-  );
-  console.log('data', error);
+  const { data: report_data } = useSWR(isMounted ? `fetchTroubleData` : null, async () => {
+    const response = await fetcher<TroubleResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, {
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+    });
+    return response;
+  });
+
   const router = useRouter();
-
-  // const { data: agent_data } = useSWR(
-  //   `totalTrouble`,
-  //   async () => {
-  //     const response = await getData(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/`, localStorage.getItem('token'));
-  //     return response;
-  //   },
-  //   {
-  //     revalidateOnFocus: false,
-  //   },
-  // );
 
   return (
     <PageContainer>
@@ -64,7 +58,7 @@ const Home: React.FC = () => {
         >
           <Box padding="5px 8px" textAlign="center">
             <Text fontSize="30px" fontWeight="bold">
-              {/* {data?.data.length} */}
+              {report_data?.data.length}
             </Text>
             <Text>Lihat Semua Data Gangguan</Text>
           </Box>

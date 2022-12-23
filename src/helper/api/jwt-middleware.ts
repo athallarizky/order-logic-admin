@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
-
-export default jwtMiddleware;
 
 function jwtMiddleware(req, res, handler) {
   try {
     const token = req.headers['authorization'];
-    if (token == undefined || token.length <= 0) {
+    if (token === undefined || token.length <= 0) {
       return res.status(401).json({
         status: 401,
         message: 'YOU ARE NOT AUTHORIZED',
@@ -23,3 +23,5 @@ function jwtMiddleware(req, res, handler) {
     });
   }
 }
+
+export default jwtMiddleware;

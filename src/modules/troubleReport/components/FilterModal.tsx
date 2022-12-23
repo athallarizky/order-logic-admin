@@ -64,9 +64,12 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
       data = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     }
 
-    const responseData = await mutate('/api/v1/filter', sender('/api/v1/filter', { data }));
+    const responseData = await mutate(
+      '/api/v1/filter',
+      sender('/api/v1/filter', { data }, localStorage.getItem('token')),
+    );
 
-    setTroubleData(responseData);
+    setTroubleData(responseData.data);
     setFields({
       no_tiket: '',
       no_internet: '',
@@ -87,9 +90,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
   const { data: sto_data } = useSWR(
     `/api/v1/sto/`,
     async () => {
-      const response = await fetcher<STOListResponse>(`/api/v1/sto/`);
+      const response = await fetcher<STOListResponse>(`/api/v1/sto/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
+
     {
       revalidateOnFocus: false,
     },
@@ -99,7 +107,11 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
   const { data: jenis_gangguan } = useSWR(
     `/api/v1/jenis_gangguan/`,
     async () => {
-      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`);
+      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -107,11 +119,15 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
     },
   );
 
-  // Fetch Agent
+  // // Fetch Agent
   const { data: agent_data } = useSWR(
     `/api/v1/agent/`,
     async () => {
-      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`);
+      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {

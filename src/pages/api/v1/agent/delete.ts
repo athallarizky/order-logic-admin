@@ -6,8 +6,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let message;
 
-  const parsedData = JSON.parse(req.body);
-  const { id_agent } = parsedData.data;
+  // const parsedData = JSON.parse(req.body);
+  const { id_agent } = req.body.data;
 
   // const { id_agent } = req.body;
   if (!id_agent) {

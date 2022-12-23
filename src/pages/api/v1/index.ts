@@ -3,8 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
 import apiHandler from '@/helper/api/api';
 
-export default apiHandler(handler);
-
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).end();
   const data = await dbConfig('close_wo_table')
@@ -29,3 +27,5 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     data,
   });
 }
+
+export default apiHandler(handler);

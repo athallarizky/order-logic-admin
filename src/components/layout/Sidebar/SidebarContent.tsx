@@ -1,6 +1,7 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, Flex, Text, BoxProps, CloseButton } from '@chakra-ui/react';
+import { Box, Flex, Text, BoxProps, CloseButton, Button } from '@chakra-ui/react';
 import { FiHome, FiTrendingUp, FiCompass, FiStar } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import NavItem from './NavItem';
@@ -23,6 +24,14 @@ interface SidebarContentProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    router.replace('/login');
+  };
+
   return (
     <Box background="#DF362D" shadow="base" w={{ base: 'full', md: 60 }} pos="fixed" h="full" {...rest} color="#FFFFFF">
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
@@ -38,11 +47,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
           </NavItem>
         </Link>
       ))}
-      <Link href="/ads">
+      <Box onClick={handleLogout}>
         <NavItem icon={FiStar} navUrl="/dsaa">
           Logout
         </NavItem>
-      </Link>
+      </Box>
     </Box>
   );
 };

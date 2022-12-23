@@ -36,9 +36,13 @@ const ModalAddJenisGangguan: React.FC<ModalAddJenisGangguanProps> = ({ isOpen, o
   const [jenisGangguan, setJenisGangguan] = useState<string>('');
 
   const { data: jenis_gangguan_data } = useSWR(
-    `/api/v1/jenis_gangguan/`,
+    `fetchJenisGangguanData`,
     async () => {
-      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`);
+      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -47,14 +51,23 @@ const ModalAddJenisGangguan: React.FC<ModalAddJenisGangguanProps> = ({ isOpen, o
   );
 
   const submitHandler = async () => {
-    await sender('/api/v1/jenis_gangguan/create', { data: { jenis_gangguan: jenisGangguan.toUpperCase() } });
-    mutate(`/api/v1/jenis_gangguan/`);
+    await sender(
+      '/api/v1/jenis_gangguan/create',
+      { data: { jenis_gangguan: jenisGangguan.toUpperCase() } },
+      localStorage.getItem('token'),
+    );
+    mutate(`fetchJenisGangguanData`);
     setJenisGangguan('');
   };
 
   const deleteHandler = async id_jenis_gangguan => {
-    await sender('/api/v1/jenis_gangguan/delete', { data: { id_jenis_gangguan } }, 'DELETE');
-    mutate(`/api/v1/jenis_gangguan/`);
+    await sender(
+      '/api/v1/jenis_gangguan/delete',
+      { data: { id_jenis_gangguan } },
+      localStorage.getItem('token'),
+      'DELETE',
+    );
+    mutate(`fetchJenisGangguanData`);
   };
 
   return (

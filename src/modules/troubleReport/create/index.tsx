@@ -28,18 +28,23 @@ import { isEmptyString } from '@/helper/utils';
 
 // Integrate API
 import useSWR, { mutate } from 'swr';
+import { useRouter } from 'next/router';
 import sender from 'helper/sender';
 import fetcher from 'helper/fetcher';
 import type { AgentListResponse, STOListResponse, JenisGangguanListResponse } from '@/interfaces/response';
 
 const TroubleReport = () => {
   const [activePopup, setActivePopup] = useState<string>();
-
+  const router = useRouter();
   // Fetch STO
   const { data: sto_data } = useSWR(
-    `/api/v1/sto/`,
+    `fetchSTOData`,
     async () => {
-      const response = await fetcher<STOListResponse>(`/api/v1/sto/`);
+      const response = await fetcher<STOListResponse>(`/api/v1/sto/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -49,9 +54,13 @@ const TroubleReport = () => {
 
   // Fetch Jenis Gangguan
   const { data: jenis_gangguan } = useSWR(
-    `/api/v1/jenis_gangguan/`,
+    `fetchJenisGangguanData`,
     async () => {
-      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`);
+      const response = await fetcher<JenisGangguanListResponse>(`/api/v1/jenis_gangguan/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -61,9 +70,13 @@ const TroubleReport = () => {
 
   // Fetch Agent
   const { data: agent_data } = useSWR(
-    `/api/v1/agent/`,
+    `fetchAgentData`,
     async () => {
-      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`);
+      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -88,11 +101,12 @@ const TroubleReport = () => {
     setActivePopup('');
   };
 
-  const [isFailed, setIsFailed] = useState<boolean>(false);
+  const [responseMessage, setResponseMessage] = useState<string>('');
+  const [responseStatus, setResponseStatus] = useState<string | 'success' | 'error'>('');
 
   const fieldHandler = e => {
     const name = e.target.getAttribute('name');
-    setIsFailed(false);
+    setResponseMessage('');
     setFields({
       ...fields,
       [name]: e.target.value,
@@ -100,7 +114,8 @@ const TroubleReport = () => {
   };
 
   const submitHandler = async () => {
-    setIsFailed(false);
+    setResponseMessage('');
+    setResponseStatus('error');
     const { no_tiket, no_internet, no_telp, id_sto, source, id_agent, id_gangguan, perbaikan } = fields;
 
     const stillEmpty =
@@ -113,7 +128,8 @@ const TroubleReport = () => {
     const stillNull = id_sto === null || id_agent === null || id_gangguan === null;
 
     if (stillEmpty || stillNull) {
-      setIsFailed(true);
+      setResponseMessage('Masih Ada Data yang Kosong!');
+      setResponseStatus('error');
       return 'Failed';
     }
 
@@ -122,7 +138,7 @@ const TroubleReport = () => {
       updatedField = Object.assign(fields, { tanggal: format(new Date(tanggal), 'yyyy-MM-dd') });
     }
 
-    await sender('/api/v1/create', { data: updatedField });
+    const response = await sender('/api/v1/create', { data: updatedField }, localStorage.getItem('token'));
 
     setFields({
       no_tiket: '',
@@ -135,7 +151,9 @@ const TroubleReport = () => {
       detail_gangguan: '',
       perbaikan: '',
     });
-
+    setResponseStatus('success');
+    setResponseMessage(response.message);
+    router.replace('/trouble-report');
     return 'Success';
   };
 
@@ -179,7 +197,7 @@ const TroubleReport = () => {
                   onChange={e => fieldHandler(e)}
                   name="no_tiket"
                   isRequired
-                  isInvalid={isEmptyString(fields.no_tiket)}
+                  // isInvalid={isEmptyString(fields.no_tiket)}
                   value={fields.no_tiket}
                   variant="outline"
                   color="black"
@@ -196,7 +214,7 @@ const TroubleReport = () => {
                   placeholder="Select option"
                   onChange={e => fieldHandler(e)}
                   isRequired
-                  isInvalid={fields.source === ''}
+                  // isInvalid={fields.source === ''}
                   value={fields.source}
                   variant="outline"
                   color="black"
@@ -219,7 +237,7 @@ const TroubleReport = () => {
                   onChange={e => fieldHandler(e)}
                   name="no_internet"
                   isRequired
-                  isInvalid={isEmptyString(fields.no_internet)}
+                  // isInvalid={isEmptyString(fields.no_internet)}
                   value={fields.no_internet}
                   variant="outline"
                   color="black"
@@ -236,7 +254,7 @@ const TroubleReport = () => {
                   onChange={e => fieldHandler(e)}
                   name="no_telp"
                   isRequired
-                  isInvalid={isEmptyString(fields.no_telp)}
+                  // isInvalid={isEmptyString(fields.no_telp)}
                   value={fields.no_telp}
                   variant="outline"
                   color="black"
@@ -257,10 +275,10 @@ const TroubleReport = () => {
                     placeholder="Select option"
                     width="48%"
                     mr="50px"
-                    onClick={() => mutate(`/api/v1/sto/`)}
+                    onClick={() => mutate(`fetchSTOData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    isInvalid={fields.id_sto === null}
+                    // isInvalid={fields.id_sto === null}
                     variant="outline"
                     color="black"
                   >
@@ -290,10 +308,10 @@ const TroubleReport = () => {
                     width="48%"
                     mr="50px"
                     name="id_gangguan"
-                    onClick={() => mutate(`/api/v1/jenis_gangguan/`)}
+                    onClick={() => mutate(`fetchJenisGangguanData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    isInvalid={fields.id_gangguan === null}
+                    // isInvalid={fields.id_gangguan === null}
                     variant="outline"
                     color="black"
                   >
@@ -323,10 +341,10 @@ const TroubleReport = () => {
                     placeholder="Select option"
                     width="48%"
                     mr="50px"
-                    onClick={() => mutate(`/api/v1/agent/`)}
+                    onClick={() => mutate(`fetchAgentData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    isInvalid={fields.id_agent === null}
+                    // isInvalid={fields.id_agent === null}
                     variant="outline"
                     color="black"
                   >
@@ -354,7 +372,7 @@ const TroubleReport = () => {
                 onChange={e => fieldHandler(e)}
                 name="perbaikan"
                 isRequired
-                isInvalid={isEmptyString(fields.perbaikan)}
+                // isInvalid={isEmptyString(fields.perbaikan)}
                 value={fields.perbaikan}
                 variant="outline"
                 color="black"
@@ -378,10 +396,10 @@ const TroubleReport = () => {
 
             <Flex align="center" direction="column" mt="5vh">
               <Stack spacing={3} mb="3vh">
-                {isFailed && (
-                  <Alert status="error">
+                {responseMessage && (
+                  <Alert status={responseStatus === 'success' ? 'success' : 'error'}>
                     <AlertIcon />
-                    Masih Ada Data yang Kosong!
+                    {responseMessage}
                   </Alert>
                 )}
               </Stack>

@@ -1,8 +1,9 @@
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import errorHandler from '@/helper/api/error-handler';
 import jwtMiddleware from '@/helper/api/jwt-middleware';
-const jwt = require('jsonwebtoken');
 
-export default apiHandler;
+const jwt = require('jsonwebtoken');
 
 function apiHandler(handler) {
   return async (req, res) => {
@@ -25,3 +26,5 @@ export function ExtractJWT(req) {
     return false;
   }
 }
+
+export default apiHandler;

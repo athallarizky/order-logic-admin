@@ -2,15 +2,15 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConfig from '@/configs/dbConfig';
 import apiHandler from '@/helper/api/api';
 
-export default apiHandler(handler);
-
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'DELETE') return res.status(405).json({ status: 405, message: 'Method not allowed' });
 
   let message;
 
-  const parsedData = JSON.parse(req.body);
-  const { id_sto } = parsedData.data;
+  // const parsedData = JSON.parse(req.body);
+  // const { id_sto } = parsedData.data;
+
+  const { id_sto } = req.body.data;
 
   // const { id_sto } = req.body;
   if (!id_sto) {
@@ -29,3 +29,5 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     message,
   });
 }
+
+export default apiHandler(handler);

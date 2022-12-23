@@ -39,9 +39,13 @@ const ModalAddAgent: React.FC<ModalAddAgentProps> = ({ isOpen, onClose }) => {
   const [agentName, setAgentName] = useState<string>('');
 
   const { data: agent_data } = useSWR(
-    `/api/v1/agent/`,
+    `fetchAgentData`,
     async () => {
-      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`);
+      const response = await fetcher<AgentListResponse>(`/api/v1/agent/`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
       return response;
     },
     {
@@ -50,14 +54,18 @@ const ModalAddAgent: React.FC<ModalAddAgentProps> = ({ isOpen, onClose }) => {
   );
 
   const submitHandler = async () => {
-    await sender('/api/v1/agent/create', { data: { name_agent: capitalizeWords(agentName) } });
-    mutate(`/api/v1/agent/`);
+    await sender(
+      '/api/v1/agent/create',
+      { data: { name_agent: capitalizeWords(agentName) } },
+      localStorage.getItem('token'),
+    );
+    mutate(`fetchAgentData`);
     setAgentName('');
   };
 
   const deleteHandler = async id_agent => {
-    await sender('/api/v1/agent/delete', { data: { id_agent } }, 'DELETE');
-    mutate(`/api/v1/agent/`);
+    await sender('/api/v1/agent/delete', { data: { id_agent } }, localStorage.getItem('token'), 'DELETE');
+    mutate(`fetchAgentData`);
   };
 
   return (
