@@ -63,13 +63,16 @@ const Performansi = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [sourceData, setSourceData] = useState('draft');
   const [responseData, setResponseData] = useState<any>();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const submitHandler = async (start, end, source) => {
+    setIsFetching(true);
     const start_date = format(new Date(start), 'yyyy-MM-dd');
     const end_date = format(new Date(end), 'yyyy-MM-dd');
 
     const response = await sender('/api/v1/chart', { start_date, end_date, source }, localStorage.getItem('token'));
     setResponseData(response.data);
+    setIsFetching(false);
   };
 
   const randomColorGenerator = () => Math.floor(Math.random() * 16777215).toString(16);
@@ -220,6 +223,8 @@ const Performansi = () => {
               color="white"
               onClick={() => submitHandler(startDate, endDate, sourceData)}
               minW={{ base: '100%', md: '200px' }}
+              isLoading={isFetching}
+              disabled={isFetching}
             >
               <Text fontSize="20px">Terapkan</Text>
             </Button>

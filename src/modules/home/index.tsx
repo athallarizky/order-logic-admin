@@ -8,17 +8,14 @@ import useIsMounted from 'hooks/useIsMounted';
 
 import PageContainer from '@/components/layout/PageContainer';
 
-// import axios from 'axios';
+import useUserStore from 'stores/useUserStore';
 
 export type TroubleResponse = {
   data: FormWoDataListResponse[];
 };
 
 const Home: React.FC = () => {
-  // const { data: report_data } = useSWR(`totalTrouble`, async () => {
-  //   const response = await fetcher('', localStorage.getItem('token'));
-  //   return response;
-  // });
+  const { userData } = useUserStore(state => state);
 
   const isMounted = useIsMounted();
 
@@ -36,7 +33,12 @@ const Home: React.FC = () => {
   return (
     <PageContainer>
       <Box className="greetings">
-        <Text fontSize="25px">Selamat Datang, Admin!</Text>
+        <Text fontSize="25px">
+          Welcome, {userData.name}!{' '}
+          <Text as="span" color="#00000070">
+            ({userData.national_identity_number})
+          </Text>
+        </Text>
       </Box>
 
       <Divider marginY="2vh" />

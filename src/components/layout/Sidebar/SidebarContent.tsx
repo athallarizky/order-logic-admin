@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, Flex, Text, BoxProps, CloseButton, Button } from '@chakra-ui/react';
-import { FiHome, FiTrendingUp, FiCompass, FiStar, FiUsers } from 'react-icons/fi';
+import { Box, Flex, Text, BoxProps, CloseButton } from '@chakra-ui/react';
+import { FiHome, FiTrendingUp, FiStar, FiUsers, FiLogOut } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import useUserStore from 'stores/useUserStore';
 import NavItem from './NavItem';
@@ -21,7 +21,7 @@ const LinkItems: Array<LinkItemProps> = [
 ];
 
 const AdminLinkItems: Array<LinkItemProps> = [
-  { name: 'User Management', icon: FiUsers, href: '/user-management', subMenu: null },
+  { name: 'User Management', icon: FiUsers, href: '/admin/user-management', subMenu: null },
 ];
 
 interface SidebarContentProps extends BoxProps {
@@ -64,7 +64,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
         ))}
 
       <Box onClick={handleLogout}>
-        <NavItem icon={FiStar} navUrl="/dsaa">
+        <NavItem icon={FiLogOut} navUrl="/dsaa">
           Logout
         </NavItem>
       </Box>
