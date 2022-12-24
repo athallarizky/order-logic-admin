@@ -16,6 +16,7 @@ import {
 import sender from 'helper/sender';
 import { isEmptyString } from '@/helper/utils';
 import axios from 'configs/axiosConfig';
+import useUserStore from 'stores/useUserStore';
 
 const Login = () => {
   const [fields, setFields] = useState({
@@ -24,6 +25,7 @@ const Login = () => {
   });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
+  const { setToken, setUserData } = useUserStore(state => state);
 
   const fieldHandler = e => {
     const name = e.target.getAttribute('name');
@@ -49,9 +51,11 @@ const Login = () => {
     try {
       response = await sender('/api/v1/auth/login', { data: fields }, localStorage.getItem('token'));
       if (response.status === 200) {
-        window.localStorage.setItem('user', JSON.stringify(response.data.user));
-        window.localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = response.data.token;
+        const { token, user } = response.data;
+        window.localStorage.setItem('user', JSON.stringify(user));
+        window.localStorage.setItem('token', token);
+        setToken(token);
+        setUserData(user);
         await router.push('/');
       } else {
         setErrorMessage(response.message);

@@ -2,8 +2,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Box, Flex, Text, BoxProps, CloseButton, Button } from '@chakra-ui/react';
-import { FiHome, FiTrendingUp, FiCompass, FiStar } from 'react-icons/fi';
+import { FiHome, FiTrendingUp, FiCompass, FiStar, FiUsers } from 'react-icons/fi';
 import { IconType } from 'react-icons';
+import useUserStore from 'stores/useUserStore';
 import NavItem from './NavItem';
 
 interface LinkItemProps {
@@ -19,12 +20,18 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Performansi', icon: FiStar, href: '/performansi', subMenu: null },
 ];
 
+const AdminLinkItems: Array<LinkItemProps> = [
+  { name: 'User Management', icon: FiUsers, href: '/user-management', subMenu: null },
+];
+
 interface SidebarContentProps extends BoxProps {
   onClose: () => void;
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   const router = useRouter();
+
+  const { token, userData } = useUserStore();
 
   const handleLogout = async () => {
     localStorage.removeItem('user');
@@ -47,6 +54,15 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
           </NavItem>
         </Link>
       ))}
+      {userData.level === 'Admin' &&
+        AdminLinkItems.map(link => (
+          <Link href={link.href}>
+            <NavItem key={link.name} icon={link.icon} navUrl={link.href} subMenu={link.subMenu}>
+              {link.name}
+            </NavItem>
+          </Link>
+        ))}
+
       <Box onClick={handleLogout}>
         <NavItem icon={FiStar} navUrl="/dsaa">
           Logout
