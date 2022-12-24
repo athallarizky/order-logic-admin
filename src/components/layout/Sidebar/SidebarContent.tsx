@@ -31,7 +31,7 @@ interface SidebarContentProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   const router = useRouter();
 
-  const { token, userData } = useUserStore();
+  const { userData } = useUserStore();
 
   const handleLogout = async () => {
     localStorage.removeItem('user');

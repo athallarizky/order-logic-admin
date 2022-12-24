@@ -12,7 +12,8 @@ import { format } from 'date-fns';
 import sender from 'helper/sender';
 
 // Components
-import { Flex, Text, Button, FormControl, FormLabel, Select } from '@chakra-ui/react';
+import { Flex, Text, Button, FormControl, FormLabel, Select, Box } from '@chakra-ui/react';
+
 import PageContainer from '@/components/layout/PageContainer';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, ChartDataLabels);
@@ -23,7 +24,7 @@ export const options = {
     ChartDataLabels,
     datalabels: {
       formatter(value, context) {
-        return `${(Math.round(value * 100) / 100).toFixed(2)}%`;
+        return `${+(Math.round(value * 100) / 100).toFixed(2)}%`;
       },
       labels: {
         title: {
@@ -67,15 +68,15 @@ const Performansi = () => {
     const start_date = format(new Date(start), 'yyyy-MM-dd');
     const end_date = format(new Date(end), 'yyyy-MM-dd');
 
-    const response = await sender('/api/v1/chart', { start_date, end_date, source });
-    setResponseData(response);
+    const response = await sender('/api/v1/chart', { start_date, end_date, source }, localStorage.getItem('token'));
+    setResponseData(response.data);
   };
 
   const randomColorGenerator = () => Math.floor(Math.random() * 16777215).toString(16);
   const agentMapping = agentData => {
-    const agentName = agentData.map(data => data.name_agent);
-    const agentValue = agentData.map(data => data.hasil * 100);
-    const generatedColor = [...Array(agentData.length)].map(color => `#${randomColorGenerator()}`);
+    const agentName = agentData?.map(data => data.name_agent);
+    const agentValue = agentData?.map(data => data.hasil * 100);
+    const generatedColor = [...Array(agentData?.length)]?.map(_ => `#${randomColorGenerator()}`);
 
     const datasets = [
       {
@@ -89,9 +90,9 @@ const Performansi = () => {
   };
 
   const jenisGangguanMapping = jenisGangguanData => {
-    const jenisGangguanName = jenisGangguanData.map(data => data.jenis_gangguan);
-    const jenisGangguanValue = jenisGangguanData.map(data => data.hasil * 100);
-    const generatedColor = [...Array(jenisGangguanData.length)].map(_ => `#${randomColorGenerator()}`);
+    const jenisGangguanName = jenisGangguanData?.map(data => data.jenis_gangguan);
+    const jenisGangguanValue = jenisGangguanData?.map(data => data.hasil * 100);
+    const generatedColor = [...Array(jenisGangguanData?.length)]?.map(_ => `#${randomColorGenerator()}`);
 
     const datasets = [
       {
@@ -105,9 +106,9 @@ const Performansi = () => {
   };
 
   const stoMapping = stoData => {
-    const stoName = stoData.map(data => data.sto);
-    const stoValue = stoData.map(data => data.hasil);
-    const generatedColor = [...Array(stoData.length)].map(_ => `#${randomColorGenerator()}`);
+    const stoName = stoData?.map(data => data.sto);
+    const stoValue = stoData?.map(data => data.hasil);
+    const generatedColor = [...Array(stoData?.length)]?.map(_ => `#${randomColorGenerator()}`);
     const datasets = [
       {
         label: '',
@@ -227,24 +228,62 @@ const Performansi = () => {
       </Flex>
       {responseData && (
         <Flex className="chart-wrapper" flexWrap="wrap">
-          <Flex flexDirection="column" className="agent-chart-wrapper" mx="10px" width="500px">
+          <Flex
+            flexDirection="column"
+            className="agent-chart-wrapper"
+            mx="10px"
+            // width="500px"
+            width="48%"
+            padding="2rem"
+            boxShadow="md"
+          >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data Agent
             </Text>
-            {<Doughnut data={agentMapping(responseData.agent)} options={options} />}
+            {responseData.agent.length > 0 ? (
+              <Doughnut data={agentMapping(responseData.agent)} options={options} />
+            ) : (
+              <Text mx="auto">Tidak Ada Data</Text>
+            )}
           </Flex>
-          <Flex flexDirection="column" className="agent-chart-wrapper" mx="10px" width="500px">
+          <Flex
+            flexDirection="column"
+            className="agent-chart-wrapper"
+            mx="10px"
+            width="48%"
+            // width="500px"
+            padding="2rem"
+            boxShadow="md"
+          >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data Gangguan
             </Text>
-            {<Doughnut data={jenisGangguanMapping(responseData.jenis_gangguan)} options={options} />}
+            {responseData.jenis_gangguan.length > 0 ? (
+              <Doughnut data={jenisGangguanMapping(responseData.jenis_gangguan)} options={options} />
+            ) : (
+              <Text mx="auto">Jenis Gangguan</Text>
+            )}
           </Flex>
 
-          <Flex width="100%" flexDirection="column" alignItems="center" mt="5vh">
+          <Flex
+            width="100%"
+            className="sto-chart-wrapper"
+            flexDirection="column"
+            alignItems="center"
+            mt="5vh"
+            padding="2rem"
+            boxShadow="md"
+          >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data STO
             </Text>
-            <Flex width="80%">{<Bar options={options} data={stoMapping(responseData.sto)} />}</Flex>
+            <Flex width="80%">
+              {responseData.sto.length > 0 ? (
+                <Bar options={options} data={stoMapping(responseData.sto)} />
+              ) : (
+                <Text mx="auto">Tidak Ada Data</Text>
+              )}
+            </Flex>
           </Flex>
         </Flex>
       )}
