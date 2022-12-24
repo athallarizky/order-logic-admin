@@ -8,11 +8,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (admin['level'] !== 'Admin') return res.status(405).json({ message: 'You are not an admin.' });
   if (req.method !== 'PUT') return res.status(405).json({ message: 'Method not allowed.' });
 
-  const { id, full_name, national_identity_number, password, level, status } = req.body.data;
-  if (!id || !full_name || !national_identity_number || !password || !level || !status) {
+  const { id, full_name, national_identity_number, level, status } = req.body.data;
+  if (!id || !full_name || !national_identity_number || !level || !status) {
     return res
       .status(400)
-      .json({ status: 400, message: 'id, full_name, national_identity_number, password, level, status, required' });
+      .json({ status: 400, message: 'id, full_name, national_identity_number, level, status, required' });
   }
 
   const check = await dbConfig('users_table').where({ id });
@@ -24,15 +24,13 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  await dbConfig('users_table')
-    .where({ id })
-    .update({
-      full_name,
-      national_identity_number,
-      password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-      level,
-      status,
-    });
+  await dbConfig('users_table').where({ id }).update({
+    full_name,
+    national_identity_number,
+    // password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+    level,
+    status,
+  });
 
   return res.status(200).json({
     status: 200,

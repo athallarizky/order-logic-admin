@@ -3,8 +3,6 @@ import dbConfig from '@/configs/dbConfig';
 import apiHandler, { ExtractJWT } from '@/helper/api/api';
 import bcrypt from 'bcrypt';
 
-export default apiHandler(handler);
-
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
   const admin = ExtractJWT(req);
   if (admin['level'] !== 'Admin') return res.status(405).json({ message: 'You are not an admin.' });
@@ -19,10 +17,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
       .json({ status: 400, message: 'full_name, national_identity_number, password, level, status, required' });
   }
   await dbConfig('users_table').insert({
-    full_name: full_name,
-    national_identity_number: national_identity_number,
+    full_name,
+    national_identity_number,
     password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-    level: level,
+    level,
     status: 'Aktif',
   });
 
@@ -31,3 +29,5 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     message: 'created successfully',
   });
 }
+
+export default apiHandler(handler);
