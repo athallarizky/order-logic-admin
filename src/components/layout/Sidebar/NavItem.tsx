@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Flex, FlexProps, Icon, Box } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 import { useRouter } from 'next/router';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 /**
  * Nav Item
@@ -12,18 +12,55 @@ interface NavItemProps extends FlexProps {
   navUrl: string;
   children: string;
   subMenu?: string | null;
+  isOpen?: undefined | boolean;
 }
-const NavItem = ({ icon, children, navUrl, subMenu, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemProps) => {
   const router = useRouter();
+
+  console.log({ isOpen, subMenu });
 
   const renderSubMenu = type => {
     const assuranceSubMenuList = [
       { subMenuList: 'Rekap Gangguan Logic', href: '/trouble-report' },
       { subMenuList: 'Input Gangguan Logic', href: '/trouble-report/create' },
     ];
+
+    const userManagementSubMenuList = [
+      { subMenuList: 'Add User', href: '/admin/user-management/create' },
+      // { subMenuList: 'Update User', href: '/admin/user-management/update' },
+    ];
+
     switch (type) {
       case 'assurance':
-        return assuranceSubMenuList.map(menu => (
+        if (isOpen) {
+          return (
+            <Box>
+              {assuranceSubMenuList.map(menu => (
+                <Link href={menu.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+                  <Flex
+                    align="center"
+                    p="4"
+                    mx="4"
+                    ml="10"
+                    borderRadius="lg"
+                    cursor="pointer"
+                    background={router.pathname === menu.href ? '#7D110B' : ''}
+                    _hover={{
+                      bg: '#7D110B',
+                      color: 'white',
+                    }}
+                  >
+                    {menu.subMenuList}
+                  </Flex>
+                </Link>
+              ))}
+            </Box>
+          );
+        }
+        return '';
+
+      case 'user-management':
+        return userManagementSubMenuList.map(menu => (
           <Link href={menu.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
             <Flex
               align="center"
@@ -79,7 +116,8 @@ const NavItem = ({ icon, children, navUrl, subMenu, ...rest }: NavItemProps) => 
           )}
           {children}
         </Box>
-        {subMenu && <FiChevronDown />}
+        {subMenu && !isOpen && <FiChevronDown />}
+        {subMenu && isOpen && <FiChevronUp />}
       </Flex>
       {subMenu && renderSubMenu(subMenu)}
     </Link>
@@ -88,6 +126,7 @@ const NavItem = ({ icon, children, navUrl, subMenu, ...rest }: NavItemProps) => 
 
 NavItem.defaultProps = {
   subMenu: null,
+  isOpen: undefined,
 };
 
 export default NavItem;

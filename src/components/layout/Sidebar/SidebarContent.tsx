@@ -12,17 +12,9 @@ interface LinkItemProps {
   icon: IconType;
   href: string;
   subMenu: string | null;
+  isOpen?: undefined | boolean;
+  onClick?: () => void;
 }
-
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/', subMenu: null },
-  { name: 'Assurance', icon: FiTrendingUp, href: '/assurance', subMenu: 'assurance' },
-  { name: 'Performansi', icon: FiStar, href: '/performansi', subMenu: null },
-];
-
-const AdminLinkItems: Array<LinkItemProps> = [
-  { name: 'User Management', icon: FiUsers, href: '/admin/user-management', subMenu: null },
-];
 
 interface SidebarContentProps extends BoxProps {
   onClose: () => void;
@@ -30,8 +22,32 @@ interface SidebarContentProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   const router = useRouter();
-
   const { userData } = useUserStore();
+
+  const [isAssuranceOpen, setIsAssuranceOpen] = React.useState<boolean>(false);
+
+  const LinkItems: Array<LinkItemProps> = [
+    { name: 'Home', icon: FiHome, href: '/', subMenu: null, onClick: () => router.replace('/') },
+    {
+      name: 'Assurance',
+      icon: FiStar,
+      href: '#',
+      subMenu: 'assurance',
+      isOpen: isAssuranceOpen,
+      onClick: () => setIsAssuranceOpen(!isAssuranceOpen),
+    },
+    {
+      name: 'Performansi',
+      icon: FiTrendingUp,
+      href: '/performansi',
+      subMenu: null,
+      onClick: () => router.replace('/performansi'),
+    },
+  ];
+
+  const AdminLinkItems: Array<LinkItemProps> = [
+    { name: 'User Management', icon: FiUsers, href: '/admin/user-management', subMenu: 'user-management' },
+  ];
 
   const handleLogout = async () => {
     localStorage.removeItem('user');
@@ -48,11 +64,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map(link => (
-        <Link href={link.href}>
-          <NavItem key={link.name} icon={link.icon} navUrl={link.href} subMenu={link.subMenu}>
+        <Box onClick={link.onClick}>
+          <NavItem key={link.name} icon={link.icon} navUrl={link.href} subMenu={link.subMenu} isOpen={link.isOpen}>
             {link.name}
           </NavItem>
-        </Link>
+        </Box>
       ))}
       {userData.level === 'Admin' &&
         AdminLinkItems.map(link => (

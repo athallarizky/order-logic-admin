@@ -13,14 +13,17 @@ import {
   Icon,
   Switch,
   Select,
+  Box,
 } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
 import useIsMounted from 'hooks/useIsMounted';
 import useSWR, { mutate } from 'swr';
 import fetcher from 'helper/fetcher';
-import { FiEdit } from 'react-icons/fi';
+import { RiAddFill } from 'react-icons/ri';
 import sender from 'helper/sender';
 import useUserStore from 'stores/useUserStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserManagement = () => {
   const isMounted = useIsMounted();
@@ -68,16 +71,48 @@ const UserManagement = () => {
         localStorage.getItem('token'),
         'PUT',
       );
-      mutate('fetchUserList');
+
+      if (response.status === 200) {
+        toast.success(response.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: 'light',
+        });
+      } else {
+        toast.error(response.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: 'light',
+        });
+      }
+      console.log(response.status);
+      await mutate('fetchUserList');
       return response;
     };
 
   return (
     <PageContainer>
+      <ToastContainer />
       <Flex className="user-list-wrapper" direction="column">
         <Text variant="heading" fontSize="3rem" mt="5vh" mb="5vh">
           User Management
         </Text>
+        <Flex mb="4vh" justify="flex-end" align="center">
+          <Box className="left-action">
+            <Button background="primary" height="30px">
+              <RiAddFill className="icon" color="white" style={{ marginRight: '5px' }} />
+              <Text fontSize="15px" color="white">
+                Tambah User
+              </Text>
+            </Button>
+          </Box>
+        </Flex>
         <TableContainer width="100%">
           <Table variant="simple" colorScheme="red">
             <Thead>
@@ -102,6 +137,7 @@ const UserManagement = () => {
                         colorScheme="red"
                         sx={{ 'span.chakra-switch__track:not([data-checked])': { backgroundColor: '#00000040' } }}
                         defaultChecked={user.status === 'Aktif'}
+                        isChecked={user.status === 'Aktif'}
                         onChange={() => handleUpdateUser('updateStatus', user)}
                       />
                     </Td>
