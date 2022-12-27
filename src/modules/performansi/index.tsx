@@ -18,6 +18,32 @@ import PageContainer from '@/components/layout/PageContainer';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, ChartDataLabels);
 
+export const barChartOption = {
+  responsive: true,
+  plugins: {
+    ChartDataLabels,
+    datalabels: {
+      formatter(value, context) {
+        return `${+(Math.round(value * 100) / 100).toFixed(2)}`;
+      },
+      labels: {
+        title: {
+          color: 'white',
+        },
+      },
+    },
+    legend: {
+      // position: 'bottom' as const,
+      display: false,
+    },
+
+    title: {
+      display: false,
+      text: 'Bar Chart',
+    },
+  },
+};
+
 export const options = {
   responsive: true,
   plugins: {
@@ -33,26 +59,13 @@ export const options = {
       },
     },
     legend: {
-      // position: 'bottom' as const,
-      display: false,
+      position: 'bottom' as const,
+      display: true,
     },
-    // tooltips: {
-    //   callbacks: {
-    //     label: (tooltipItem, data) => {
-    //       const dataset = data.datasets[tooltipItem.datasetIndex];
-    //       const meta = dataset._meta[Object.keys(dataset._meta)[0]];
-    //       const { total } = meta;
-    //       const currentValue = tooltipItem?.value;
-    //       const percentage = parseFloat(((currentValue / total) * 100).toFixed(1));
-    //       return `${currentValue} (${percentage}%)`;
-    //     },
-    //     title: tooltipItem => `${tooltipItem[0]?.label}`,
-    //   },
-    // },
 
     title: {
       display: false,
-      text: 'Bar Chart',
+      text: 'Donught Chart',
     },
   },
 };
@@ -65,6 +78,8 @@ const Performansi = () => {
   const [responseData, setResponseData] = useState<any>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
+  // console.log('options', options);
+
   const submitHandler = async (start, end, source) => {
     setIsFetching(true);
     const start_date = format(new Date(start), 'yyyy-MM-dd');
@@ -75,7 +90,12 @@ const Performansi = () => {
     setIsFetching(false);
   };
 
-  const randomColorGenerator = () => Math.floor(Math.random() * 16777215).toString(16);
+  // const randomColorGenerator = () => Math.floor(Math.random() * 16777215).toString(16);
+  function randomColorGenerator() {
+    let color = '';
+    for (let i = 0; i < 3; i += 1) color += `0${Math.floor((Math.random() * 16 ** 2) / 2).toString(16)}`.slice(-2);
+    return color;
+  }
   const agentMapping = agentData => {
     const agentName = agentData?.map(data => data.name_agent);
     const agentValue = agentData?.map(data => data.hasil * 100);
@@ -238,8 +258,8 @@ const Performansi = () => {
             className="agent-chart-wrapper"
             mx="10px"
             // width="500px"
-            width="48%"
-            padding="2rem"
+            width="30%"
+            // padding="2rem"
             boxShadow="md"
           >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
@@ -255,9 +275,9 @@ const Performansi = () => {
             flexDirection="column"
             className="agent-chart-wrapper"
             mx="10px"
-            width="48%"
+            width="30%"
             // width="500px"
-            padding="2rem"
+            // padding="2rem"
             boxShadow="md"
           >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
@@ -271,20 +291,20 @@ const Performansi = () => {
           </Flex>
 
           <Flex
-            width="100%"
+            width="30%"
             className="sto-chart-wrapper"
             flexDirection="column"
             alignItems="center"
             mt="5vh"
-            padding="2rem"
+            // padding="2rem"
             boxShadow="md"
           >
             <Text fontSize="25px" textAlign="center" fontWeight="bold" mb="20px">
               Report Data STO
             </Text>
-            <Flex width="80%">
+            <Flex width="100%">
               {responseData.sto.length > 0 ? (
-                <Bar options={options} data={stoMapping(responseData.sto)} />
+                <Bar options={barChartOption} data={stoMapping(responseData.sto)} />
               ) : (
                 <Text mx="auto">Tidak Ada Data</Text>
               )}

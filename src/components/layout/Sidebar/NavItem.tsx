@@ -17,8 +17,6 @@ interface NavItemProps extends FlexProps {
 const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemProps) => {
   const router = useRouter();
 
-  console.log({ isOpen, subMenu });
-
   const renderSubMenu = type => {
     const assuranceSubMenuList = [
       { subMenuList: 'Rekap Gangguan Logic', href: '/trouble-report' },
@@ -26,7 +24,7 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
     ];
 
     const userManagementSubMenuList = [
-      { subMenuList: 'Add User', href: '/admin/user-management/create' },
+      { subMenuList: 'List User', href: '/admin/user-management' },
       // { subMenuList: 'Update User', href: '/admin/user-management/update' },
     ];
 
@@ -60,25 +58,28 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
         return '';
 
       case 'user-management':
-        return userManagementSubMenuList.map(menu => (
-          <Link href={menu.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-            <Flex
-              align="center"
-              p="4"
-              mx="4"
-              ml="10"
-              borderRadius="lg"
-              cursor="pointer"
-              background={router.pathname === menu.href ? '#7D110B' : ''}
-              _hover={{
-                bg: '#7D110B',
-                color: 'white',
-              }}
-            >
-              {menu.subMenuList}
-            </Flex>
-          </Link>
-        ));
+        if (isOpen) {
+          return userManagementSubMenuList.map(menu => (
+            <Link href={menu.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+              <Flex
+                align="center"
+                p="4"
+                mx="4"
+                ml="10"
+                borderRadius="lg"
+                cursor="pointer"
+                background={router.pathname === menu.href ? '#7D110B' : ''}
+                _hover={{
+                  bg: '#7D110B',
+                  color: 'white',
+                }}
+              >
+                {menu.subMenuList}
+              </Flex>
+            </Link>
+          ));
+        }
+        return '';
 
       default:
         return '';

@@ -6,49 +6,19 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('agent_table').insert([
         {
-          name_agent: 'Spense',
+          name_agent: 'Jhon',
         },
         {
-          name_agent: 'Wallis',
+          name_agent: 'Riky',
         },
         {
-          name_agent: 'Quincey',
+          name_agent: 'Hangga',
         },
         {
-          name_agent: 'Rhetta',
+          name_agent: 'Doni',
         },
         {
-          name_agent: 'Geri',
-        },
-        {
-          name_agent: 'Ann-marie',
-        },
-        {
-          name_agent: 'Mozes',
-        },
-        {
-          name_agent: 'Javier',
-        },
-        {
-          name_agent: 'Zena',
-        },
-        {
-          name_agent: 'Kori',
-        },
-        {
-          name_agent: 'Kayne',
-        },
-        {
-          name_agent: 'Padraig',
-        },
-        {
-          name_agent: 'Traver',
-        },
-        {
-          name_agent: 'Sandro',
-        },
-        {
-          name_agent: 'Jan',
+          name_agent: 'Fahrul',
         },
       ]);
     });

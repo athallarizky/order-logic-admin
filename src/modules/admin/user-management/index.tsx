@@ -91,7 +91,6 @@ const UserManagement = () => {
           theme: 'light',
         });
       }
-      console.log(response.status);
       await mutate('fetchUserList');
       return response;
     };

@@ -25,6 +25,18 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   const { userData } = useUserStore();
 
   const [isAssuranceOpen, setIsAssuranceOpen] = React.useState<boolean>(false);
+  const [isUserManagementOpen, setIsUserManagementOpen] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    // const firstPath = router.pathname.split('/')[1];
+    const path = window.location.href;
+
+    if (path.indexOf('trouble-report') > -1) {
+      setIsAssuranceOpen(true);
+    } else if (path.indexOf('user-management') > -1) {
+      setIsUserManagementOpen(true);
+    }
+  }, [router]);
 
   const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, href: '/', subMenu: null, onClick: () => router.replace('/') },
@@ -46,7 +58,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   ];
 
   const AdminLinkItems: Array<LinkItemProps> = [
-    { name: 'User Management', icon: FiUsers, href: '/admin/user-management', subMenu: 'user-management' },
+    {
+      name: 'User Management',
+      icon: FiUsers,
+      href: '#',
+      subMenu: 'user-management',
+      isOpen: isUserManagementOpen,
+      onClick: () => setIsUserManagementOpen(!isUserManagementOpen),
+    },
   ];
 
   const handleLogout = async () => {
@@ -72,11 +91,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
       ))}
       {userData.level === 'Admin' &&
         AdminLinkItems.map(link => (
-          <Link href={link.href}>
-            <NavItem key={link.name} icon={link.icon} navUrl={link.href} subMenu={link.subMenu}>
+          <Box onClick={link.onClick}>
+            <NavItem key={link.name} icon={link.icon} navUrl={link.href} subMenu={link.subMenu} isOpen={link.isOpen}>
               {link.name}
             </NavItem>
-          </Link>
+          </Box>
         ))}
 
       <Box onClick={handleLogout}>

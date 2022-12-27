@@ -71,7 +71,7 @@ const Login = () => {
     <Flex justify="center" align="center" bg="primary" width="100%" height="100vh">
       <Flex bg="white" width="40%" height="65vh" borderRadius="8px" padding="2%" direction="column">
         <Heading as="h1" size="xl" textAlign="center" mb="8vh">
-          Welcome
+          Logic On Desk
         </Heading>
         <Flex direction="column">
           <FormControl mb="2vh">
@@ -80,7 +80,7 @@ const Login = () => {
           </FormControl>
           <FormControl mb="2vh">
             <FormLabel>Password</FormLabel>
-            <Input type="text" name="password" onChange={e => fieldHandler(e)} />
+            <Input type="password" name="password" onChange={e => fieldHandler(e)} />
           </FormControl>
           {errorMessage !== '' && (
             <Alert status="error" mb="3vh">

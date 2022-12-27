@@ -29,6 +29,7 @@ export interface GangguanLogicList {
   sto: string;
   agent: string;
   tanggal: string;
+  jenis_gangguan: string;
   detail_gangguan: string;
   crated_at: string;
 }
