@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 // Hooks & Interface
 import { useRouter } from 'next/router';
-import useSWR, { mutate } from 'swr';
 import useIsMounted from 'hooks/useIsMounted';
-import { FormWoDataListResponse } from 'interfaces/response';
+import { TroubleResponse } from 'interfaces/response';
+import useSWR, { mutate } from 'swr';
 import fetcher from 'helper/fetcher';
 import sender from 'helper/sender';
 
@@ -23,10 +23,6 @@ import { RiAddFill, RiDeleteBin5Fill, RiEditBoxFill } from 'react-icons/ri';
 import ConfirmModal from 'components/shared/Modal.Confirm';
 import FilterModal from './components/FilterModal';
 import DetailModal from './components/DetailModal';
-
-export type TroubleResponse = {
-  data: FormWoDataListResponse[];
-};
 
 const TroubleReport = () => {
   const { isOpen: isOpenFilterModal, onOpen: onOpenFilterModal, onClose: onCloseFilterModal } = useDisclosure();
@@ -66,12 +62,7 @@ const TroubleReport = () => {
 
   const handleDeleteData = async () => {
     if (deletedIdData !== null) {
-      const response = await sender(
-        '/api/v1',
-        { data: { id: deletedIdData } },
-        localStorage.getItem('token'),
-        'DELETE',
-      );
+      const response = await sender(`/api/v1/?id=${deletedIdData}`, null, localStorage.getItem('token'), 'DELETE');
       if (response.status === 200) {
         toast.success(response.message, {
           position: 'top-right',

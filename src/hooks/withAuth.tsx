@@ -22,9 +22,10 @@ const withAuth = (WrappedComponent: React.ComponentType, route = '') => {
     React.useEffect(() => {
       if (isNoAccess) {
         router.replace('/login');
-      } else if (jwtToken) {
-        router.replace(`/${route}`);
       }
+      // else if (jwtToken) {
+      //   router.replace(`/${route}`);
+      // }
     }, [isNoAccess, jwtToken]);
 
     return <WrappedComponent {...props} />;

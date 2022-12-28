@@ -307,61 +307,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, setTroubleDa
               </FormControl>
             </Flex>
           </Flex>
-          {/* <Flex className="form-group" flexDirection="column" width="100%">
-            <Flex justify="space-between" mb="2vh">
-              <FormControl width="48%">
-                <FormLabel>No Tiket</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="no_tiket" />
-              </FormControl>
-
-              <FormControl width="48%">
-                <FormLabel>No Internet</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="no_internet" />
-              </FormControl>
-            </Flex>
-
-            <Flex justify="space-between" mb="2vh">
-              <FormControl width="48%">
-                <FormLabel>Kode STO</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="code_sto" />
-              </FormControl>
-
-              <FormControl width="48%">
-                <FormLabel>Perbaikan</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="perbaikan" />
-              </FormControl>
-            </Flex>
-
-            <Flex justify="space-between" mb="2vh">
-              <FormControl width="48%">
-                <FormLabel>Loker</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="loker" />
-              </FormControl>
-
-              <FormControl width="48%">
-                <FormLabel>Agen HI</FormLabel>
-                <Input type="text" onChange={e => fieldHandler(e)} name="agen_hi" />
-              </FormControl>
-            </Flex>
-
-            <FormControl mb="2vh">
-              <FormLabel>Keterangan</FormLabel>
-              <Textarea onChange={e => fieldHandler(e)} name="keterangan" />
-            </FormControl>
-
-            <DatePickerStyle>
-              <FormControl>
-                <FormLabel>Tanggal</FormLabel>
-                <DatePicker
-                  className="datepicker-input"
-                  selected={tanggal}
-                  onChange={date => setTanggal(date)}
-                  dateFormat="dd-MM-yyyy"
-                  value={tanggal || 'pilih tanggal'}
-                />
-              </FormControl>
-            </DatePickerStyle>
-          </Flex> */}
         </ModalBody>
 
         <ModalFooter>

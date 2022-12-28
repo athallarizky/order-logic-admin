@@ -53,3 +53,7 @@ export interface AgentList {
 export interface AgentListResponse {
   data: AgentList[];
 }
+
+export type TroubleResponse = {
+  data: FormWoDataListResponse[];
+};

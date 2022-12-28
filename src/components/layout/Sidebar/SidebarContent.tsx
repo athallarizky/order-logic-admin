@@ -69,8 +69,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
   ];
 
   const handleLogout = async () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    await localStorage.removeItem('user');
+    await localStorage.removeItem('token');
     router.replace('/login');
   };
 

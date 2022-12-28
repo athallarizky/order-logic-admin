@@ -1,6 +1,6 @@
 // import axios from 'configs/axiosConfig';
 
-export default async function postData(url, data, token?, method = 'POST') {
+export default async function postData(url, data?, token?, method = 'POST') {
   const response = await fetch(url, {
     method,
     headers: {

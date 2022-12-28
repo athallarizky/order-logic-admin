@@ -20,7 +20,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     tanggal,
   } = req.body.data;
 
-  await dbConfig('close_wo_table').where({ id: id }).update({
+  const updatedData = await dbConfig('close_wo_table').where({ id }).update({
     no_tiket,
     no_internet,
     no_telp,
@@ -34,7 +34,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   });
 
   return res.status(200).json({
+    status: 200,
     message: 'Update Success',
+    data: updatedData,
   });
 }
 
