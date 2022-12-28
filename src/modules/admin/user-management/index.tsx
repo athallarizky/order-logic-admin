@@ -19,14 +19,18 @@ import PageContainer from '@/components/layout/PageContainer';
 import useIsMounted from 'hooks/useIsMounted';
 import useSWR, { mutate } from 'swr';
 import fetcher from 'helper/fetcher';
-import { RiAddFill } from 'react-icons/ri';
+import { RiAddFill, RiDeleteBin5Fill, RiEditBoxFill } from 'react-icons/ri';
+// import { FiEdit } from 'react-icons/fi';
 import sender from 'helper/sender';
 import useUserStore from 'stores/useUserStore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useRouter } from 'next/router';
+
 const UserManagement = () => {
   const isMounted = useIsMounted();
+  const router = useRouter();
   const { userData } = useUserStore(state => state);
   const { data: user_list } = useSWR(isMounted ? `fetchUserList` : null, async () => {
     const response = await fetcher<any>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/getUser`, {
@@ -104,7 +108,7 @@ const UserManagement = () => {
         </Text>
         <Flex mb="4vh" justify="flex-end" align="center">
           <Box className="left-action">
-            <Button background="primary" height="30px">
+            <Button background="primary" height="30px" onClick={() => router.replace('/admin/user-management/create')}>
               <RiAddFill className="icon" color="white" style={{ marginRight: '5px' }} />
               <Text fontSize="15px" color="white">
                 Tambah User
@@ -120,6 +124,7 @@ const UserManagement = () => {
                 <Th textAlign="center">NIK</Th>
                 <Th textAlign="center">User Status</Th>
                 <Th textAlign="center">User Level</Th>
+                <Th textAlign="center">Aksi</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -150,14 +155,18 @@ const UserManagement = () => {
                         </option>
                       </Select>
                     </Td>
-                    {/* <Td textAlign="center">
-                      <Button background="primary">
-                        <Icon fontSize="15px" color="white" mr="8px" as={FiEdit} />
-                        <Text color="white" fontSize="15px">
-                          Edit
-                        </Text>
+                    <Td textAlign="center">
+                      <Button
+                        background="primary"
+                        mx="5px"
+                        onClick={() => router.replace(`/admin/user-management/edit/${user.id}`)}
+                      >
+                        <Icon fontSize="20px" color="white" as={RiEditBoxFill} />
                       </Button>
-                    </Td> */}
+                      {/* <Button background="primary" mx="5px">
+                        <Icon fontSize="20px" color="white" as={RiDeleteBin5Fill} />
+                      </Button> */}
+                    </Td>
                   </Tr>
                 ))}
             </Tbody>

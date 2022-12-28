@@ -8,9 +8,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (admin['level'] !== 'Admin') return res.status(405).json({ message: 'You are not an admin.' });
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed.' });
 
-  const parsedData = JSON.parse(req.body);
+  // const parsedData = JSON.parse(req.body);
 
-  const { full_name, national_identity_number, password, level, status } = parsedData.data;
+  const { full_name, national_identity_number, password, level, status } = req.body.data;
   if (!full_name || !national_identity_number || !password || !level || !status) {
     return res
       .status(400)
@@ -21,7 +21,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     national_identity_number,
     password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
     level,
-    status: 'Aktif',
+    status,
   });
 
   return res.status(200).json({

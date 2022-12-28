@@ -24,17 +24,19 @@ import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { isEmptyString } from '@/helper/utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import useSWR, { mutate } from 'swr';
+// import { useRouter } from 'next/router';
 
 // Integrate API
-import useSWR, { mutate } from 'swr';
-import { useRouter } from 'next/router';
 import sender from 'helper/sender';
 import fetcher from 'helper/fetcher';
 import type { AgentListResponse, STOListResponse, JenisGangguanListResponse } from '@/interfaces/response';
 
 const TroubleReport = () => {
   const [activePopup, setActivePopup] = useState<string>();
-  const router = useRouter();
+  // const router = useRouter();
   // Fetch STO
   const { data: sto_data } = useSWR(
     `fetchSTOData`,
@@ -129,7 +131,6 @@ const TroubleReport = () => {
     if (stillEmpty || stillNull) {
       setResponseMessage('Masih Ada Data yang Kosong!');
       setResponseStatus('error');
-      return 'Failed';
     }
 
     let updatedField = fields;
@@ -139,25 +140,45 @@ const TroubleReport = () => {
 
     const response = await sender('/api/v1/create', { data: updatedField }, localStorage.getItem('token'));
 
+    if (response.status === 200) {
+      toast.success(response.message, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: 'light',
+      });
+    } else {
+      toast.error(response.message, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: 'light',
+      });
+      return;
+    }
+
     setFields({
       no_tiket: '',
       no_internet: '',
       no_telp: '',
-      id_sto: null,
       source: '',
+      id_sto: null,
       id_agent: null,
       id_gangguan: null,
       detail_gangguan: '',
       perbaikan: '',
     });
     setResponseStatus('success');
-    setResponseMessage(response.message);
-    router.replace('/trouble-report');
-    return 'Success';
+    setResponseMessage('Berhasil Tambah Data');
   };
 
   return (
     <PageContainer>
+      <ToastContainer />
       <ModalAddSTO isOpen={activePopup === 'add-sto'} onClose={handlePopupOnClose} />
       <ModalAddJenisGangguan isOpen={activePopup === 'add-gangguan'} onClose={handlePopupOnClose} />
       <ModalAddAgent isOpen={activePopup === 'add-agent'} onClose={handlePopupOnClose} />
@@ -167,8 +188,6 @@ const TroubleReport = () => {
         </Text>
         <Flex>
           <Flex className="form-group" flexDirection="column" width="100%">
-            {/* Date and Source */}
-
             <FormControl mb="2vh" width="48%">
               <FormLabel>
                 <Text variant="textInput">
@@ -236,7 +255,6 @@ const TroubleReport = () => {
                   onChange={e => fieldHandler(e)}
                   name="no_internet"
                   isRequired
-                  // isInvalid={isEmptyString(fields.no_internet)}
                   value={fields.no_internet}
                   variant="outline"
                   color="black"
@@ -253,7 +271,6 @@ const TroubleReport = () => {
                   onChange={e => fieldHandler(e)}
                   name="no_telp"
                   isRequired
-                  // isInvalid={isEmptyString(fields.no_telp)}
                   value={fields.no_telp}
                   variant="outline"
                   color="black"
@@ -277,7 +294,6 @@ const TroubleReport = () => {
                     onClick={() => mutate(`fetchSTOData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    // isInvalid={fields.id_sto === null}
                     variant="outline"
                     color="black"
                   >
@@ -310,7 +326,6 @@ const TroubleReport = () => {
                     onClick={() => mutate(`fetchJenisGangguanData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    // isInvalid={fields.id_gangguan === null}
                     variant="outline"
                     color="black"
                   >
@@ -343,7 +358,6 @@ const TroubleReport = () => {
                     onClick={() => mutate(`fetchAgentData`)}
                     onChange={e => fieldHandler(e)}
                     isRequired
-                    // isInvalid={fields.id_agent === null}
                     variant="outline"
                     color="black"
                   >
@@ -371,7 +385,6 @@ const TroubleReport = () => {
                 onChange={e => fieldHandler(e)}
                 name="perbaikan"
                 isRequired
-                // isInvalid={isEmptyString(fields.perbaikan)}
                 value={fields.perbaikan}
                 variant="outline"
                 color="black"
@@ -403,7 +416,7 @@ const TroubleReport = () => {
                 )}
               </Stack>
               <Button width="20%" background="primary" color="white" onClick={() => submitHandler()} height="50px">
-                <Text fontSize="20px" variant="textInput">
+                <Text fontSize="20px" variant="textInput" color="white">
                   Simpan
                 </Text>
               </Button>

@@ -27,11 +27,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({
       message: 'Update Success',
     });
-  } else {
-    return res.status(200).json({
-      message: 'Password empty',
-    });
   }
+  return res.status(200).json({
+    message: 'Password empty',
+  });
 }
 
 export default apiHandler(handler);

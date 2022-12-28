@@ -8,7 +8,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (admin['level'] !== 'Admin') return res.status(405).json({ message: 'You are not an admin.' });
   if (req.method !== 'PUT') return res.status(405).json({ message: 'Method not allowed.' });
 
-  const { id, full_name, national_identity_number, password, level, status } = req.body.data;
+  const { id, full_name, national_identity_number, password, level, status, old_password } = req.body.data;
   if (!id || !full_name || !national_identity_number || !level || !status) {
     return res
       .status(400)
@@ -25,24 +25,30 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (password) {
-    await dbConfig('users_table')
-      .where({ id })
-      .update({
-        full_name,
-        national_identity_number,
-        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-        level,
-        status,
-      });
-  } else {
-    await dbConfig('users_table').where({ id }).update({
-      full_name,
-      national_identity_number,
-      // password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-      level,
-      status,
+    const user = await dbConfig('users_table').where('national_identity_number', `${national_identity_number}`);
+    const validPassword = await bcrypt.compare(old_password, user[0].password);
+    if (validPassword) {
+      await dbConfig('users_table')
+        .where({ id })
+        .update({
+          full_name,
+          national_identity_number,
+          password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+          level,
+          status,
+        });
+    }
+    return res.status(401).json({
+      status: 401,
+      message: 'old password not match',
     });
   }
+  await dbConfig('users_table').where({ id }).update({
+    full_name,
+    national_identity_number,
+    level,
+    status,
+  });
 
   return res.status(200).json({
     status: 200,

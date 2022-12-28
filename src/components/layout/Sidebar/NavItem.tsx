@@ -25,7 +25,7 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
 
     const userManagementSubMenuList = [
       { subMenuList: 'List User', href: '/admin/user-management' },
-      // { subMenuList: 'Update User', href: '/admin/user-management/update' },
+      { subMenuList: 'Add User', href: '/admin/user-management/create' },
     ];
 
     switch (type) {

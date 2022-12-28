@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ status: 400, message: 'request required' });
   }
 
-  await dbConfig('agent_table').where({ id: id }).update({
+  await dbConfig('agent_table').where({ id }).update({
     name_agent: name,
   });
 
