@@ -13,6 +13,7 @@ import PageContainer from '@/components/layout/PageContainer';
 import { RiAddFill, RiDeleteBin5Fill, RiEditBoxFill } from 'react-icons/ri';
 
 // Modals
+import ConfirmModal from 'components/shared/Modal.Confirm';
 import FilterModal from './components/FilterModal';
 import DetailModal from './components/DetailModal';
 
@@ -23,8 +24,10 @@ export type TroubleResponse = {
 const TroubleReport = () => {
   const { isOpen: isOpenFilterModal, onOpen: onOpenFilterModal, onClose: onCloseFilterModal } = useDisclosure();
   const { isOpen: isOpenDetailModal, onOpen: onOpenDetailModal, onClose: onCloseDetailModal } = useDisclosure();
+  const { isOpen: isOpenConfirmModal, onOpen: onOpenConfirmModal, onClose: onCloseConfirmModal } = useDisclosure();
   const [modalData, setModalData] = useState(null);
   const [troubleData, setTroubleData] = useState(null);
+  const [deletedIdData, setDeletedIdData] = useState(null);
   const router = useRouter();
 
   const isMounted = useIsMounted();
@@ -44,9 +47,19 @@ const TroubleReport = () => {
     },
   );
 
-  const handleOpenModal = data => {
+  const handleOpenDetailModal = data => {
     setModalData(data);
     onOpenDetailModal();
+  };
+
+  const handleOpenConfirmModal = dataId => {
+    onOpenConfirmModal();
+    setDeletedIdData(dataId);
+  };
+
+  const handleDeleteData = () => {
+    console.log(deletedIdData);
+    setDeletedIdData(null);
   };
 
   const columns = [
@@ -108,7 +121,7 @@ const TroubleReport = () => {
       cell: row => {
         return (
           <Flex width="100%" justify="space-around">
-            <Button onClick={() => handleOpenModal(row)} height="30px" background="primary">
+            <Button onClick={() => handleOpenDetailModal(row)} height="30px" background="primary">
               <Text fontSize="15px" color="white">
                 Detail
               </Text>
@@ -116,7 +129,7 @@ const TroubleReport = () => {
             <Button onClick={() => router.push(`/trouble-report/edit/${row.id}`)} height="30px" background="primary">
               <RiEditBoxFill className="icon" color="white" />
             </Button>
-            <Button onClick={() => router.push(`/trouble-report/edit/${row.id}`)} height="30px" background="primary">
+            <Button onClick={() => handleOpenConfirmModal(row.id)} height="30px" background="primary">
               <RiDeleteBin5Fill className="icon" color="white" />
             </Button>
           </Flex>
@@ -137,6 +150,12 @@ const TroubleReport = () => {
     <PageContainer>
       <FilterModal isOpen={isOpenFilterModal} onClose={onCloseFilterModal} setTroubleData={setTroubleData} />
       <DetailModal isOpen={isOpenDetailModal} onClose={onCloseDetailModal} troubleData={modalData} />
+      <ConfirmModal
+        isOpen={isOpenConfirmModal}
+        onClose={onCloseConfirmModal}
+        confirmMessage="Anda yakin ingin menghapus data?"
+        forwardedFunction={() => handleDeleteData()}
+      />
       <Flex flexDirection="column">
         <Text variant="heading" fontSize="3rem" mt="5vh" mb="5vh">
           Rekap Gangguan Logic

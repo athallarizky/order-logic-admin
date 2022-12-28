@@ -30,7 +30,6 @@ type FilterModalProps = {
 };
 
 const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, troubleData }) => {
-  console.log('troubleData', troubleData);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -52,7 +51,11 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, troubleData 
                   <FormLabel>
                     <Text>Tanggal</Text>
                   </FormLabel>
-                  <Input type="text" readOnly value={format(new Date(troubleData?.tanggal), 'yyyy-MM-dd')} />
+                  <Input
+                    type="text"
+                    readOnly
+                    value={troubleData && format(new Date(troubleData?.tanggal), 'yyyy-MM-dd')}
+                  />
                 </FormControl>
               </Flex>
 
@@ -114,7 +117,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, troubleData 
                 </FormControl>
               </Flex>
 
-              <FormControl>
+              <FormControl mb="2vh">
                 <FormLabel>
                   <Text>Perbaikan</Text>
                 </FormLabel>
@@ -131,7 +134,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, troubleData 
 
         <ModalFooter>
           <Flex justifyContent="center" alignItems="center" width="100%">
-            <Button background="white" color="primary" mr={3} onClick={onClose} marginX="10px">
+            <Button background="primary" color="white" onClick={onClose} marginX="10px" height="40px">
               <Text fontSize="20px">Tutup</Text>
             </Button>
           </Flex>
