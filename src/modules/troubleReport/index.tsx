@@ -1,12 +1,19 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
+// Hooks & Interface
 import { useRouter } from 'next/router';
 import useSWR, { mutate } from 'swr';
-import fetcher from 'helper/fetcher';
+import useIsMounted from 'hooks/useIsMounted';
 import { FormWoDataListResponse } from 'interfaces/response';
+import fetcher from 'helper/fetcher';
+import sender from 'helper/sender';
+
+// Library
 import DataTable from 'react-data-table-component';
 import { format } from 'date-fns';
-import useIsMounted from 'hooks/useIsMounted';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Components
 import { Box, Flex, Text, Button, useDisclosure } from '@chakra-ui/react';
 import PageContainer from '@/components/layout/PageContainer';
@@ -57,9 +64,47 @@ const TroubleReport = () => {
     setDeletedIdData(dataId);
   };
 
-  const handleDeleteData = () => {
-    console.log(deletedIdData);
-    setDeletedIdData(null);
+  const handleDeleteData = async () => {
+    if (deletedIdData !== null) {
+      const response = await sender(
+        '/api/v1',
+        { data: { id: deletedIdData } },
+        localStorage.getItem('token'),
+        'DELETE',
+      );
+      if (response.status === 200) {
+        toast.success(response.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: 'light',
+        });
+        mutate(`fetchTroubleData`);
+      } else {
+        toast.error(response.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: 'light',
+        });
+      }
+    } else {
+      toast.error('Gagal, Id Kosong, Silahkan Coba lagi!', {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: 'light',
+      });
+    }
+
+    // console.log(deletedIdData);
+    // setDeletedIdData(null);
   };
 
   const columns = [
@@ -148,6 +193,7 @@ const TroubleReport = () => {
 
   return (
     <PageContainer>
+      <ToastContainer />
       <FilterModal isOpen={isOpenFilterModal} onClose={onCloseFilterModal} setTroubleData={setTroubleData} />
       <DetailModal isOpen={isOpenDetailModal} onClose={onCloseDetailModal} troubleData={modalData} />
       <ConfirmModal
