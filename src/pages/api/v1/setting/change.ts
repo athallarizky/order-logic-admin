@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { id, password } = req.body.data;
+  const { id, old_password, new_password } = req.body.data;
 
   const check = await dbConfig('users_table').where({ id });
 
@@ -18,18 +18,25 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  if (password) {
-    await dbConfig('users_table')
-      .where({ id })
-      .update({
-        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+  if (id && new_password && old_password) {
+    const validPassword = await bcrypt.compare(old_password, check[0].password);
+    if (validPassword) {
+      await dbConfig('users_table')
+        .where({ id })
+        .update({
+          password: bcrypt.hashSync(new_password, bcrypt.genSaltSync(10)),
+        });
+      return res.status(200).json({
+        message: 'Update Success.',
       });
-    return res.status(200).json({
-      message: 'Update Success',
-    });
+    } else {
+      return res.status(400).json({
+        message: 'Old password wrong.',
+      });
+    }
   }
-  return res.status(200).json({
-    message: 'Password empty',
+  return res.status(400).json({
+    message: 'Password empty.',
   });
 }
 
