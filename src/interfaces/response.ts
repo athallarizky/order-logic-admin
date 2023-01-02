@@ -57,3 +57,16 @@ export interface AgentListResponse {
 export type TroubleResponse = {
   data: FormWoDataListResponse[];
 };
+
+export interface UserData {
+  full_name: string;
+  level: string;
+  status: string;
+  national_identity_number: string;
+  password: string;
+  crated_at: string;
+}
+
+export type UserDataResponse = {
+  data: UserData;
+};

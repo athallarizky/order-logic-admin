@@ -11,4 +11,4 @@ const isEmptyString = str => {
   return str?.length === 0;
 };
 
-export {capitalizeWords, isEmptyString };
+export { capitalizeWords, isEmptyString };
