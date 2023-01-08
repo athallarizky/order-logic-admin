@@ -23,14 +23,11 @@ const EditUser = () => {
   useSWR(
     isMounted ? `fetchDetailTroubleData` : null,
     async () => {
-      const response = await fetcher<UserDataResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/getUser?id=${id}`,
-        {
-          headers: {
-            Authorization: `${localStorage.getItem('token')}`,
-          },
+      const response = await fetcher<UserDataResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/getUser?id=`, {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
         },
-      );
+      });
       setUserData(response.data);
       return response;
     },
@@ -43,13 +40,24 @@ const EditUser = () => {
     },
   );
 
+  const fieldHandler = e => {
+    const { name, value } = e.target;
+    // setResponseMessage('');
+    setUserData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  console.log('userData', userData);
+
   return (
     <PageContainer>
       <ToastContainer />
 
       <Flex flexDirection="column">
         <Text variant="heading" fontSize="3rem" mt="5vh" mb="5vh">
-          Input New User
+          Update User
         </Text>
         <Flex>
           <Flex className="form-group" flexDirection="column" width="100%">
@@ -160,7 +168,7 @@ const EditUser = () => {
               </Alert>
             )}
           </Stack> */}
-          <Button width="20%" background="primary" color="white" onClick={() => submitHandler()} height="50px">
+          <Button width="20%" background="primary" color="white" onClick={() => {}} height="50px">
             <Text fontSize="20px" variant="textInput" color="white">
               Simpan
             </Text>

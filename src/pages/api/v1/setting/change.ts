@@ -29,11 +29,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json({
         message: 'Update Success.',
       });
-    } else {
-      return res.status(400).json({
-        message: 'Old password wrong.',
-      });
     }
+    return res.status(400).json({
+      message: 'Old password wrong.',
+    });
   }
   return res.status(400).json({
     message: 'Password empty.',
