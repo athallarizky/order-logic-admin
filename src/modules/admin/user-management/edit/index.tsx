@@ -297,18 +297,6 @@ const EditUser = () => {
           </Flex>
         </Flex>
         <Flex w="100%" align="center" justify="center" direction="column">
-          {/* <Button
-            mx="1rem"
-            width="20%"
-            background="white"
-            border="2px solid red"
-            onClick={() => router.replace('/admin/user-management')}
-            height="50px"
-          >
-            <Text fontSize="20px" variant="textInput" color="primary">
-              Batalkan
-            </Text>
-          </Button> */}
           <Stack spacing={3} mb="3vh">
             {responseMessage && (
               <Alert status={responseStatus === 'success' ? 'success' : 'error'}>

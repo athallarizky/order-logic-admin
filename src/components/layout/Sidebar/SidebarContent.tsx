@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Box, Flex, Text, BoxProps, CloseButton } from '@chakra-ui/react';
-import { FiHome, FiTrendingUp, FiStar, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiTrendingUp, FiStar, FiUsers, FiLogOut, FiSettings } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import useUserStore from 'stores/useUserStore';
 import NavItem from './NavItem';
@@ -26,6 +26,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
 
   const [isAssuranceOpen, setIsAssuranceOpen] = React.useState<boolean>(false);
   const [isUserManagementOpen, setIsUserManagementOpen] = React.useState<boolean>(false);
+  const [isSettingOpen, setIsSettingOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     // const firstPath = router.pathname.split('/')[1];
@@ -54,6 +55,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarContentProps) => {
       href: '/performansi',
       subMenu: null,
       onClick: () => router.replace('/performansi'),
+    },
+    {
+      name: 'Setting',
+      icon: FiSettings,
+      href: '#',
+      subMenu: 'settings',
+      isOpen: isSettingOpen,
+      onClick: () => setIsSettingOpen(!isSettingOpen),
     },
   ];
 
