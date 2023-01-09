@@ -28,27 +28,24 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     // const user = await dbConfig('users_table').where('national_identity_number', `${national_identity_number}`);
     // const validPassword = await bcrypt.compare(old_password, user[0].password);
     // if (validPassword) {
-    await dbConfig('users_table')
-      .where({ id })
-      .update({
-        full_name,
-        national_identity_number,
-        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-        level,
-        status,
-      });
     // }
     // return res.status(401).json({
     //   status: 401,
     //   message: 'old password not match',
     // });
+    await dbConfig('users_table')
+      .where({ id })
+      .update({
+        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+      });
+  } else {
+    await dbConfig('users_table').where({ id }).update({
+      full_name,
+      national_identity_number,
+      level,
+      status,
+    });
   }
-  await dbConfig('users_table').where({ id }).update({
-    full_name,
-    national_identity_number,
-    level,
-    status,
-  });
 
   return res.status(200).json({
     status: 200,

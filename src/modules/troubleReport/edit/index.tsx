@@ -220,11 +220,11 @@ const EditTroubleReport = () => {
                 </FormLabel>
                 <Input
                   type="text"
-                  onChange={e => handleChangeValue(e)}
                   name="no_tiket"
                   isRequired
                   variant="outline"
                   color="black"
+                  onChange={e => handleChangeValue(e)}
                   defaultValue={troubleData?.no_tiket}
                 />
               </FormControl>
@@ -240,10 +240,10 @@ const EditTroubleReport = () => {
                 <Select
                   name="source"
                   placeholder="Select option"
-                  onChange={e => handleChangeValue(e)}
                   isRequired
                   variant="outline"
                   color="black"
+                  onChange={e => handleChangeValue(e)}
                   value={troubleData?.source.toLowerCase() === 'draft' ? 'draft' : 'group'}
                 >
                   <option value="draft">Draft</option>

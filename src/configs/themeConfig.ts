@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig, ThemeOverride, Input, Textarea } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig, ThemeOverride, Input, Textarea, Select } from '@chakra-ui/react';
 
 const robotoRegular = 'RobotoRegular, sans-serif';
 const robotoBold = 'RobotoBold, sans-serif';
@@ -164,6 +164,7 @@ Textarea.defaultProps = {
     borderColor: '#333333',
   },
 };
+Select.defaultProps = { ...Input.defaultProps, borderColor: 'black' };
 type CustomTheme = typeof theme & CustomColors;
 export type { CustomTheme };
 export { theme };

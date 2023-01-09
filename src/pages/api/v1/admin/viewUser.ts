@@ -9,24 +9,16 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const { id } = req.query;
   if (!id) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'id required' });
+    return res.status(400).json({ status: 400, message: 'id required' });
   }
 
-  const users = await dbConfig('users_table').where({ id }).select(
-    'id',
-    'full_name',
-    'national_identity_number',
-    'level',
-    'password',
-    'status',
-    'created_at',
-  );
+  const users = await dbConfig('users_table')
+    .where({ id })
+    .select('id', 'full_name', 'national_identity_number', 'level', 'password', 'status', 'created_at');
 
   return res.status(200).json({
     status: 200,
-    user: users[0],
+    data: users[0],
   });
 }
 

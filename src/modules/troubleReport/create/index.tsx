@@ -116,7 +116,7 @@ const TroubleReport = () => {
 
   const submitHandler = async () => {
     setResponseMessage('');
-    setResponseStatus('error');
+    setResponseStatus('');
     const { no_tiket, no_internet, no_telp, id_sto, source, id_agent, id_gangguan, perbaikan } = fields;
 
     const stillEmpty =

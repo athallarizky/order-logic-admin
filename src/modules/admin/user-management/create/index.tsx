@@ -176,7 +176,7 @@ const AddUser = () => {
                   </Text>
                 </FormLabel>
                 <Input
-                  type="text"
+                  type="password"
                   onChange={e => fieldHandler(e)}
                   name="password"
                   isRequired

@@ -59,6 +59,7 @@ export type TroubleResponse = {
 };
 
 export interface UserData {
+  id?: number;
   full_name: string;
   level: string;
   status: string;
