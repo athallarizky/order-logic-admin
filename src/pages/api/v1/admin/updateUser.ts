@@ -25,14 +25,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (password) {
-    // const user = await dbConfig('users_table').where('national_identity_number', `${national_identity_number}`);
-    // const validPassword = await bcrypt.compare(old_password, user[0].password);
-    // if (validPassword) {
-    // }
-    // return res.status(401).json({
-    //   status: 401,
-    //   message: 'old password not match',
-    // });
     await dbConfig('users_table')
       .where({ id })
       .update({

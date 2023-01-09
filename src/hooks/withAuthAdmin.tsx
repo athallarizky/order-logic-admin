@@ -21,7 +21,7 @@ const withAuthAdmin = (WrappedComponent: React.ComponentType, route: string) => 
       }
     } catch (error) {
       isAdmin = false;
-      console.log(error);
+      // console.log(error);
       // setIsAdmin(false);
     }
 

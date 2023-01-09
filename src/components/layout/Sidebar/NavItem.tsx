@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { Link, Flex, FlexProps, Icon, Box } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
@@ -28,6 +29,8 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
       { subMenuList: 'Add User', href: '/admin/user-management/create' },
     ];
 
+    const settingSubMenuList = [{ subMenuList: 'Change Password', href: '/setting/change-password' }];
+
     switch (type) {
       case 'assurance':
         if (isOpen) {
@@ -55,7 +58,7 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
             </Box>
           );
         }
-        return '';
+        return <></>;
 
       case 'user-management':
         if (isOpen) {
@@ -79,7 +82,32 @@ const NavItem = ({ icon, children, navUrl, subMenu, isOpen, ...rest }: NavItemPr
             </Link>
           ));
         }
+        return <></>;
+
+      case 'settings': {
+        if (isOpen) {
+          return settingSubMenuList.map(menu => (
+            <Link href={menu.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+              <Flex
+                align="center"
+                p="4"
+                mx="4"
+                ml="10"
+                borderRadius="lg"
+                cursor="pointer"
+                background={router.pathname === menu.href ? '#7D110B' : ''}
+                _hover={{
+                  bg: '#7D110B',
+                  color: 'white',
+                }}
+              >
+                {menu.subMenuList}
+              </Flex>
+            </Link>
+          ));
+        }
         return '';
+      }
 
       default:
         return '';
